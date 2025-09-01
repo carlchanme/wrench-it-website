@@ -8,34 +8,64 @@ interface UseScrollAnimationOptions {
   triggerOnce?: boolean
 }
 
+// Default configuration constants
+const DEFAULT_THRESHOLD = 0.1;
+const DEFAULT_ROOT_MARGIN = '0px';
+const DEFAULT_TRIGGER_ONCE = true;
+
 export function useScrollAnimation(options: UseScrollAnimationOptions = {}) {
   const [isVisible, setIsVisible] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
-  const { threshold = 0.1, rootMargin = '0px', triggerOnce = true } = options
+  const { 
+    threshold = DEFAULT_THRESHOLD, 
+    rootMargin = DEFAULT_ROOT_MARGIN, 
+    triggerOnce = DEFAULT_TRIGGER_ONCE 
+  } = options
 
   useEffect(() => {
     const element = ref.current
     if (!element) return
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-          if (triggerOnce) {
-            observer.unobserve(element)
-          }
-        } else if (!triggerOnce) {
-          setIsVisible(false)
-        }
-      },
-      { threshold, rootMargin }
-    )
+    // Check if IntersectionObserver is supported
+    if (typeof IntersectionObserver === 'undefined') {
+      console.warn('IntersectionObserver is not supported');
+      setIsVisible(true); // Fallback to showing element
+      return
+    }
 
-    observer.observe(element)
+    let observer: IntersectionObserver | null = null;
+
+    try {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry && entry.isIntersecting) {
+            setIsVisible(true)
+            if (triggerOnce && observer) {
+              observer.unobserve(element)
+            }
+          } else if (!triggerOnce) {
+            setIsVisible(false)
+          }
+        },
+        { threshold, rootMargin }
+      )
+
+      observer.observe(element)
+    } catch (error) {
+      console.error('Error setting up IntersectionObserver:', error);
+      setIsVisible(true); // Fallback to showing element
+    }
 
     return () => {
-      if (element) observer.unobserve(element)
+      if (observer && element) {
+        try {
+          observer.unobserve(element)
+          observer.disconnect()
+        } catch (error) {
+          console.error('Error cleaning up IntersectionObserver:', error);
+        }
+      }
     }
   }, [threshold, rootMargin, triggerOnce])
 

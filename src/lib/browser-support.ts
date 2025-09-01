@@ -86,9 +86,10 @@ export const supportsFeature = {
   // Modern JavaScript features
   async: () => {
     try {
-      return (async () => {})().constructor === (async () => {}).constructor
+      const asyncFunc = async () => {};
+      return asyncFunc.constructor === asyncFunc.constructor;
     } catch {
-      return false
+      return false;
     }
   },
   
@@ -134,7 +135,7 @@ export function loadPolyfills() {
 
   // Intersection Observer polyfill
   if (!supportsFeature.intersectionObserver()) {
-    import('intersection-observer').catch(() => {
+    import('intersection-observer' as any).catch(() => {
       console.warn('Failed to load IntersectionObserver polyfill')
     })
   }
@@ -152,14 +153,14 @@ export function loadPolyfills() {
 
   // Fetch polyfill for older browsers
   if (!supportsFeature.fetch()) {
-    import('whatwg-fetch').catch(() => {
+    import('whatwg-fetch' as any).catch(() => {
       console.warn('Failed to load fetch polyfill')
     })
   }
 
   // Web Animations API polyfill
   if (!supportsFeature.webAnimations()) {
-    import('web-animations-js').catch(() => {
+    import('web-animations-js' as any).catch(() => {
       console.warn('Failed to load Web Animations API polyfill')
     })
   }

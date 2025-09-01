@@ -1,6 +1,6 @@
 // Structured data (JSON-LD) utilities for SEO
 
-import { Organization, WebSite, WebPage, BreadcrumbList, Service, Person, FAQPage, Article, Review } from 'schema-dts'
+// import { Organization, WebSite, WebPage, BreadcrumbList, Service, Person, FAQPage, Article, Review } from 'schema-dts'
 
 interface StructuredDataProps {
   url?: string
@@ -15,7 +15,7 @@ interface StructuredDataProps {
 }
 
 // Organization structured data
-export function createOrganizationData(): Organization {
+export function createOrganizationData(): any {
   return {
     "@type": "Organization",
     "@id": "https://wrenchit.io/#organization",
@@ -89,7 +89,7 @@ export function createOrganizationData(): Organization {
 }
 
 // Website structured data
-export function createWebsiteData(): WebSite {
+export function createWebsiteData(): any {
   return {
     "@type": "WebSite",
     "@id": "https://wrenchit.io/#website",
@@ -117,7 +117,7 @@ export function createServiceData(service: {
   description: string
   price?: string
   url: string
-}): Service {
+}): any {
   return {
     "@type": "Service",
     name: service.name,
@@ -143,7 +143,7 @@ export function createServiceData(service: {
 }
 
 // FAQ page structured data
-export function createFAQData(faqs: Array<{ question: string; answer: string }>): FAQPage {
+export function createFAQData(faqs: Array<{ question: string; answer: string }>): any {
   return {
     "@type": "FAQPage",
     mainEntity: faqs.map(faq => ({
@@ -174,7 +174,7 @@ export function createArticleData({
   author?: string
   datePublished?: string
   dateModified?: string
-}): Article {
+}): any {
   return {
     "@type": "Article",
     headline: title,
@@ -202,7 +202,7 @@ export function createArticleData({
 }
 
 // Breadcrumb structured data
-export function createBreadcrumbData(breadcrumbs: Array<{ name: string; url: string }>): BreadcrumbList {
+export function createBreadcrumbData(breadcrumbs: Array<{ name: string; url: string }>): any {
   return {
     "@type": "BreadcrumbList",
     itemListElement: breadcrumbs.map((crumb, index) => ({
@@ -227,7 +227,7 @@ export function createPersonData({
   email?: string
   image?: string
   bio?: string
-}): Person {
+}): any {
   return {
     "@type": "Person",
     name: name,
@@ -257,7 +257,7 @@ export function createReviewData({
   reviewRating: number
   author: string
   datePublished: string
-}): Review {
+}): any {
   return {
     "@type": "Review",
     reviewBody: reviewBody,
@@ -290,7 +290,7 @@ export function generateStructuredData(props: StructuredDataProps) {
 
   // Add page-specific data
   if (props.type === 'webpage' || props.type === 'website') {
-    const pageData: WebPage = {
+    const pageData: any = {
       "@type": "WebPage",
       "@id": `${props.url}#webpage`,
       url: props.url || "https://wrenchit.io",

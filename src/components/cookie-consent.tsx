@@ -132,7 +132,7 @@ export function CookieConsent() {
     // Clear any existing tracking
     if (typeof window !== 'undefined') {
       // Clear Google Analytics
-      if (window.gtag) {
+      if (window.gtag && process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID) {
         window.gtag('config', process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID, {
           send_page_view: false
         })
@@ -358,8 +358,6 @@ export function useCookieConsent() {
 
 // Component to show cookie settings link in footer
 export function CookieSettingsLink() {
-  const [, setShowSettings] = useState(false)
-  
   const openSettings = () => {
     // This would need to be connected to the main cookie consent component
     // For now, it opens the preferences again

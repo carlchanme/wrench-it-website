@@ -143,7 +143,7 @@ export function FAQSection({
                   key={category}
                   variant={selectedCategory === category ? "default" : "outline"}
                   size="sm"
-                  onClick={() => setSelectedCategory(category)}
+                  onClick={() => setSelectedCategory(category as string)}
                   className="text-xs"
                 >
                   {category}

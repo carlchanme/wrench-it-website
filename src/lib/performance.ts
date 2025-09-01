@@ -291,9 +291,9 @@ export function throttle<T extends (...args: any[]) => any>(
 ): (...args: Parameters<T>) => void {
   let inThrottle: boolean
 
-  return function executedFunction(...args: Parameters<T>) {
+  return (...args: Parameters<T>) => {
     if (!inThrottle) {
-      func.apply(this, args)
+      func(...args)
       inThrottle = true
       setTimeout(() => inThrottle = false, limit)
     }
@@ -363,7 +363,7 @@ export function initPWAOptimizations(): void {
     deferredPrompt = e
 
     // Show custom install button
-    const installButton = document.querySelector('#install-app-button')
+    const installButton = document.querySelector('#install-app-button') as HTMLElement
     if (installButton) {
       installButton.style.display = 'block'
       
@@ -412,7 +412,7 @@ export function initPerformanceOptimizations(): void {
           console.log('LCP:', entry.startTime)
         }
         if (entry.entryType === 'first-input') {
-          console.log('FID:', entry.processingStart - entry.startTime)
+          console.log('FID:', (entry as any).processingStart - entry.startTime)
         }
         if (entry.entryType === 'layout-shift' && !(entry as any).hadRecentInput) {
           console.log('CLS:', (entry as any).value)

@@ -9,13 +9,33 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
 import { CheckCircle, AlertCircle, Loader2 } from "lucide-react"
 
+// Validation constants
+const MIN_NAME_LENGTH = 2;
+const MAX_NAME_LENGTH = 100;
+const MIN_SUBJECT_LENGTH = 5;
+const MAX_SUBJECT_LENGTH = 200;
+const MIN_MESSAGE_LENGTH = 10;
+const MAX_MESSAGE_LENGTH = 5000;
+
+// Error messages
+const FALLBACK_ERROR_MESSAGE = "Failed to send message. Please try again or contact us directly at carl@wrenchit.io";
+const SUCCESS_RESPONSE_TIME = "24 hours";
+
 const contactFormSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters").max(100, "Name must be less than 100 characters"),
-  email: z.string().min(1, "Email is required").email({ message: "Please enter a valid email address" }),
+  name: z.string()
+    .min(MIN_NAME_LENGTH, `Name must be at least ${MIN_NAME_LENGTH} characters`)
+    .max(MAX_NAME_LENGTH, `Name must be less than ${MAX_NAME_LENGTH} characters`),
+  email: z.string()
+    .min(1, "Email is required")
+    .email({ message: "Please enter a valid email address" }),
   company: z.string().optional(),
   phone: z.string().optional(),
-  subject: z.string().min(5, "Subject must be at least 5 characters").max(200, "Subject must be less than 200 characters"),
-  message: z.string().min(10, "Message must be at least 10 characters").max(5000, "Message must be less than 5000 characters")
+  subject: z.string()
+    .min(MIN_SUBJECT_LENGTH, `Subject must be at least ${MIN_SUBJECT_LENGTH} characters`)
+    .max(MAX_SUBJECT_LENGTH, `Subject must be less than ${MAX_SUBJECT_LENGTH} characters`),
+  message: z.string()
+    .min(MIN_MESSAGE_LENGTH, `Message must be at least ${MIN_MESSAGE_LENGTH} characters`)
+    .max(MAX_MESSAGE_LENGTH, `Message must be less than ${MAX_MESSAGE_LENGTH} characters`)
 })
 
 type ContactFormData = z.infer<typeof contactFormSchema>
@@ -61,7 +81,7 @@ export function ContactForm() {
       console.error("Contact form submission failed:", error)
       setError("root", {
         type: "manual",
-        message: errorMessage || "Failed to send message. Please try again or contact us directly at carl@wrenchit.io"
+        message: errorMessage || FALLBACK_ERROR_MESSAGE
       })
     }
   }
@@ -77,7 +97,7 @@ export function ContactForm() {
                 Message Sent Successfully!
               </h3>
               <p className="text-green-700 dark:text-green-300">
-                Thank you for reaching out. We'll get back to you within 24 hours.
+                Thank you for reaching out. We'll get back to you within {SUCCESS_RESPONSE_TIME}.
               </p>
             </div>
           </div>

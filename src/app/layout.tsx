@@ -98,9 +98,6 @@ export const metadata: Metadata = {
       alt: "WrenchIt - Professional Software Development & AI Automation Services",
     },
   },
-  facebook: {
-    appId: "YOUR_FACEBOOK_APP_ID", // Replace with actual app ID
-  },
   robots: {
     index: true,
     follow: true,

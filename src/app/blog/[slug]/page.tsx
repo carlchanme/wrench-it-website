@@ -8,6 +8,24 @@ import { SocialShare, SocialShareFloating } from "@/components/social-share"
 import { getPostBySlug, getAllPosts, calculateReadingTime } from "@/lib/blog-data"
 import { notFound } from "next/navigation"
 
+// Simple markdown to HTML converter for blog content
+function formatContent(content: string): string {
+  if (!content) return '';
+  
+  return content
+    .replace(/^# (.+)$/gm, '<h1 class="text-3xl font-bold mt-8 mb-4">$1</h1>')
+    .replace(/^## (.+)$/gm, '<h2 class="text-2xl font-bold mt-6 mb-3">$1</h2>')
+    .replace(/^### (.+)$/gm, '<h3 class="text-xl font-bold mt-4 mb-2">$1</h3>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" class="text-primary hover:underline">$1</a>')
+    .replace(/^---$/gm, '<hr class="my-8 border-border" />')
+    .replace(/\n\n/g, '</p><p class="mb-4">')
+    .replace(/^\*(.+)$/gm, '<li class="ml-4">$1</li>')
+    .replace(/(<li[\s\S]*<\/li>)/g, '<ul class="list-disc ml-6 mb-4">$1</ul>')
+    .replace(/^(.+)$/gm, '<p class="mb-4">$1</p>');
+}
+
 export async function generateStaticParams() {
   const posts = getAllPosts()
   return posts.map((post) => ({
@@ -57,26 +75,15 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
     notFound()
   }
 
-  const postUrl = `https://wrenchit.io/blog/${post.id}`
+  // Constants
+  const SITE_URL = 'https://wrenchit.io';
+  const MAX_RELATED_POSTS = 3;
+  
+  const postUrl = `${SITE_URL}/blog/${post.id}`;
   const relatedPosts = getAllPosts()
     .filter(p => p.id !== post.id && p.category === post.category)
-    .slice(0, 3)
+    .slice(0, MAX_RELATED_POSTS);
 
-  // Simple markdown to HTML converter for blog content
-  const formatContent = (content: string) => {
-    return content
-      .replace(/^# (.+)$/gm, '<h1 class="text-3xl font-bold mt-8 mb-4">$1</h1>')
-      .replace(/^## (.+)$/gm, '<h2 class="text-2xl font-bold mt-6 mb-3">$1</h2>')
-      .replace(/^### (.+)$/gm, '<h3 class="text-xl font-bold mt-4 mb-2">$1</h3>')
-      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.+?)\*/g, '<em>$1</em>')
-      .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" class="text-primary hover:underline">$1</a>')
-      .replace(/^---$/gm, '<hr class="my-8 border-border" />')
-      .replace(/\n\n/g, '</p><p class="mb-4">')
-      .replace(/^\*(.+)$/gm, '<li class="ml-4">$1</li>')
-      .replace(/(<li.*<\/li>)/s, '<ul class="list-disc ml-6 mb-4">$1</ul>')
-      .replace(/^(.+)$/gm, '<p class="mb-4">$1</p>')
-  }
 
   return (
     <>

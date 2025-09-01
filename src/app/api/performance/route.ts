@@ -1,9 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+// Types
+interface PerformanceDataPayload {
+  type: string;
+  name?: string;
+  value?: number;
+  timestamp: number;
+  url?: string;
+  userAgent?: string;
+  rating?: string;
+  connection?: string;
+  deviceMemory?: number;
+}
+
+// Constants
+const MOCK_METRICS_COUNT = 147;
+const MOCK_LCP_VALUE = 2150;
+const MOCK_FID_VALUE = 45;
+const MOCK_CLS_VALUE = 0.08;
+const MOCK_GOOD_RATING = 0.85;
+const HOUR_IN_MILLISECONDS = 3600000;
+
 // Performance monitoring API endpoint
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const body: PerformanceDataPayload = await request.json()
     
     // Validate the incoming data
     if (!body.type || !body.timestamp) {
@@ -50,16 +71,20 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Error processing performance data:', error)
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    console.error('Error processing performance data:', errorMessage);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { 
+        error: 'Internal server error',
+        details: process.env.NODE_ENV === 'development' ? errorMessage : undefined
+      },
       { status: 500 }
     )
   }
 }
 
 // Store performance data (implement based on your storage solution)
-async function storePerformanceData(data: any) {
+async function storePerformanceData(data: PerformanceDataPayload): Promise<void> {
   // Example implementations:
   
   // 1. Database storage (PostgreSQL, MongoDB, etc.)
@@ -125,7 +150,7 @@ export async function GET(request: NextRequest) {
         name: 'LCP',
         value: 2100,
         rating: 'good',
-        timestamp: Date.now() - 3600000,
+        timestamp: Date.now() - HOUR_IN_MILLISECONDS,
         page: 'https://wrenchit.io'
       },
       {
@@ -133,16 +158,16 @@ export async function GET(request: NextRequest) {
         name: 'FID',
         value: 50,
         rating: 'good',
-        timestamp: Date.now() - 3600000,
+        timestamp: Date.now() - HOUR_IN_MILLISECONDS,
         page: 'https://wrenchit.io'
       }
     ],
     summary: {
-      totalMetrics: 147,
-      avgLCP: 2150,
-      avgFID: 45,
-      avgCLS: 0.08,
-      goodRating: 0.85
+      totalMetrics: MOCK_METRICS_COUNT,
+      avgLCP: MOCK_LCP_VALUE,
+      avgFID: MOCK_FID_VALUE,
+      avgCLS: MOCK_CLS_VALUE,
+      goodRating: MOCK_GOOD_RATING
     }
   }
 

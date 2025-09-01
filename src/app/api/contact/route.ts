@@ -4,37 +4,56 @@ import { sanitizeContactForm, logSecurityEvent } from '@/lib/input-sanitizer';
 import { emailQueue } from '@/lib/email-queue';
 import { getAdminNotificationTemplate, getAutoReplyTemplate } from '@/lib/email-templates';
 
-// CORS configuration
-const corsHeaders = {
+// Constants
+const RATE_LIMIT_RETRY_AFTER = '300';
+const AUTO_REPLY_DELAY = 2000;
+
+// Combined headers for consistent usage
+const DEFAULT_HEADERS = {
+  // CORS headers
   'Access-Control-Allow-Origin': process.env.NODE_ENV === 'production' 
     ? 'https://wrenchit.io' 
     : 'http://localhost:3000',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   'Access-Control-Max-Age': '86400',
-};
-
-// Security headers
-const securityHeaders = {
+  // Security headers
   'X-Content-Type-Options': 'nosniff',
   'X-Frame-Options': 'DENY',
   'X-XSS-Protection': '1; mode=block',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
 };
 
+// Helper functions
+function getClientIp(request: NextRequest): string {
+  return request.ip || 
+    request.headers.get('x-forwarded-for')?.split(',')[0] || 
+    request.headers.get('x-real-ip') || 
+    'unknown';
+}
+
+function createErrorResponse(message: string, status: number, retryAfter?: string) {
+  const headers: Record<string, string> = { ...DEFAULT_HEADERS };
+  if (retryAfter) {
+    headers['Retry-After'] = retryAfter;
+  }
+  
+  return NextResponse.json(
+    { error: message, ...(retryAfter && { retryAfter }) },
+    { status, headers }
+  );
+}
+
 export async function OPTIONS() {
   return new NextResponse(null, {
     status: 200,
-    headers: { ...corsHeaders, ...securityHeaders },
+    headers: DEFAULT_HEADERS,
   });
 }
 
 export async function POST(request: NextRequest) {
   const startTime = Date.now();
-  const clientIp = request.ip || 
-    request.headers.get('x-forwarded-for')?.split(',')[0] || 
-    request.headers.get('x-real-ip') || 
-    'unknown';
+  const clientIp = getClientIp(request);
 
   try {
     // Check rate limiting
@@ -46,19 +65,10 @@ export async function POST(request: NextRequest) {
         retryAfter: rateLimitCheck.retryAfter,
       });
 
-      return NextResponse.json(
-        { 
-          error: 'Too many requests. Please try again later.',
-          retryAfter: rateLimitCheck.retryAfter,
-        },
-        { 
-          status: 429,
-          headers: {
-            ...corsHeaders,
-            ...securityHeaders,
-            'Retry-After': rateLimitCheck.retryAfter?.toString() || '300',
-          },
-        }
+      return createErrorResponse(
+        'Too many requests. Please try again later.',
+        429,
+        rateLimitCheck.retryAfter?.toString() || RATE_LIMIT_RETRY_AFTER
       );
     }
 
@@ -71,10 +81,7 @@ export async function POST(request: NextRequest) {
         ip: clientIp, 
         error: error instanceof Error ? error.message : 'Unknown parsing error'
       });
-      return NextResponse.json(
-        { error: 'Invalid JSON in request body' },
-        { status: 400, headers: { ...corsHeaders, ...securityHeaders } }
-      );
+      return createErrorResponse('Invalid JSON in request body', 400);
     }
 
     // Sanitize and validate input
@@ -91,7 +98,7 @@ export async function POST(request: NextRequest) {
           error: 'Validation failed',
           details: sanitizationResult.errors,
         },
-        { status: 400, headers: { ...corsHeaders, ...securityHeaders } }
+        { status: 400, headers: DEFAULT_HEADERS }
       );
     }
 
@@ -100,10 +107,7 @@ export async function POST(request: NextRequest) {
     // Check for required environment variables
     if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
       console.error('❌ Gmail SMTP credentials not configured');
-      return NextResponse.json(
-        { error: 'Email service is not properly configured' },
-        { status: 500, headers: { ...corsHeaders, ...securityHeaders } }
-      );
+      return createErrorResponse('Email service is not properly configured', 500);
     }
 
     // Generate email templates
@@ -124,7 +128,7 @@ export async function POST(request: NextRequest) {
       subject: autoReplyTemplate.subject,
       html: autoReplyTemplate.html,
       text: autoReplyTemplate.text,
-      delay: 2000, // 2 second delay
+      delay: AUTO_REPLY_DELAY,
     });
 
     // Log successful submission
@@ -149,7 +153,7 @@ export async function POST(request: NextRequest) {
       },
       { 
         status: 200,
-        headers: { ...corsHeaders, ...securityHeaders },
+        headers: DEFAULT_HEADERS,
       }
     );
 
@@ -173,7 +177,7 @@ export async function POST(request: NextRequest) {
       },
       { 
         status: 500,
-        headers: { ...corsHeaders, ...securityHeaders },
+        headers: DEFAULT_HEADERS,
       }
     );
   }
@@ -193,7 +197,7 @@ export async function GET() {
     },
     { 
       status: 200,
-      headers: { ...corsHeaders, ...securityHeaders },
+      headers: DEFAULT_HEADERS,
     }
   );
 }

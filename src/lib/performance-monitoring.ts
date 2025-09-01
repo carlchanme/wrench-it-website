@@ -447,7 +447,7 @@ export function collectRUMData(): PerformanceData {
     hardwareConcurrency: navigator.hardwareConcurrency,
     metrics: {},
     navigation: {
-      type: navigation.type === 0 ? 'navigate' : navigation.type === 1 ? 'reload' : 'back_forward',
+      type: navigation.type || 'navigate',
       redirectCount: navigation.redirectCount
     },
     resources: {

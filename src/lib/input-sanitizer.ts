@@ -1,8 +1,19 @@
 import { JSDOM } from 'jsdom';
 import validator from 'validator';
 
+// Constants
+const MIN_NAME_LENGTH = 2;
+const MIN_SUBJECT_LENGTH = 5;
+const MIN_MESSAGE_LENGTH = 10;
+const MAX_NAME_LENGTH = 100;
+const MAX_SUBJECT_LENGTH = 200;
+const MAX_MESSAGE_LENGTH = 5000;
+const MAX_COMPANY_LENGTH = 100;
+const EXCESSIVE_LINKS_COUNT = 3;
+const EXCESSIVE_SPECIAL_CHARS_COUNT = 10;
+
 // Create DOMPurify instance for server-side use
-const window = new JSDOM('').window;
+const { window } = new JSDOM('');
 const createDOMPurify = require('dompurify');
 const purify = createDOMPurify(window);
 
@@ -15,11 +26,28 @@ export interface SanitizedContactData {
   phone?: string;
 }
 
-export function sanitizeContactForm(data: any): {
-  success: boolean;
-  data?: SanitizedContactData;
-  errors?: string[];
-} {
+interface RawContactData {
+  name?: unknown;
+  email?: unknown;
+  subject?: unknown;
+  message?: unknown;
+  company?: unknown;
+  phone?: unknown;
+}
+
+// Type for successful validation result
+interface ValidationSuccess {
+  success: true;
+  data: SanitizedContactData;
+}
+
+// Type for failed validation result
+interface ValidationFailure {
+  success: false;
+  errors: string[];
+}
+
+export function sanitizeContactForm(data: RawContactData): ValidationSuccess | ValidationFailure {
   const errors: string[] = [];
 
   // Validate required fields
@@ -42,15 +70,15 @@ export function sanitizeContactForm(data: any): {
 
   // Sanitize and validate data
   const sanitizedData: SanitizedContactData = {
-    name: sanitizeText(data.name, 100),
-    email: sanitizeEmail(data.email),
-    subject: sanitizeText(data.subject, 200),
-    message: sanitizeText(data.message, 5000),
+    name: sanitizeText(data.name as string, MAX_NAME_LENGTH),
+    email: sanitizeEmail(data.email as string),
+    subject: sanitizeText(data.subject as string, MAX_SUBJECT_LENGTH),
+    message: sanitizeText(data.message as string, MAX_MESSAGE_LENGTH),
   };
 
   // Optional fields
   if (data.company && typeof data.company === 'string') {
-    sanitizedData.company = sanitizeText(data.company, 100);
+    sanitizedData.company = sanitizeText(data.company, MAX_COMPANY_LENGTH);
   }
   if (data.phone && typeof data.phone === 'string') {
     sanitizedData.phone = sanitizePhone(data.phone);
@@ -61,16 +89,16 @@ export function sanitizeContactForm(data: any): {
     errors.push('Invalid email address format');
   }
 
-  if (sanitizedData.name.length < 2) {
-    errors.push('Name must be at least 2 characters long');
+  if (sanitizedData.name.length < MIN_NAME_LENGTH) {
+    errors.push(`Name must be at least ${MIN_NAME_LENGTH} characters long`);
   }
 
-  if (sanitizedData.subject.length < 5) {
-    errors.push('Subject must be at least 5 characters long');
+  if (sanitizedData.subject.length < MIN_SUBJECT_LENGTH) {
+    errors.push(`Subject must be at least ${MIN_SUBJECT_LENGTH} characters long`);
   }
 
-  if (sanitizedData.message.length < 10) {
-    errors.push('Message must be at least 10 characters long');
+  if (sanitizedData.message.length < MIN_MESSAGE_LENGTH) {
+    errors.push(`Message must be at least ${MIN_MESSAGE_LENGTH} characters long`);
   }
 
   // Check for suspicious content
@@ -111,24 +139,30 @@ function sanitizePhone(phone: string): string {
   return phone.replace(/[^\d+\-()s]/g, '').trim();
 }
 
+// Suspicious content patterns
+const SCRIPT_INJECTION_PATTERN = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
+const SQL_INJECTION_PATTERN = /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|UNION|OR|AND)\b.*(\b(FROM|INTO|SET|WHERE|HAVING)\b))/gi;
+const SPAM_PHRASES_PATTERN = /\b(viagra|cialis|loan|debt|casino|poker|lottery|winner)\b/gi;
+const EXCESSIVE_LINKS_PATTERN = new RegExp(`(https?:\\/\\/[^\\s]+.*){${EXCESSIVE_LINKS_COUNT},}`, 'gi');
+const EXCESSIVE_SPECIAL_CHARS_PATTERN = new RegExp(`[!@#$%^&*()_+=\\[{}|;':"\\\\,.<>?]{${EXCESSIVE_SPECIAL_CHARS_COUNT},}`, 'gi');
+
 function containsSuspiciousContent(text: string): boolean {
   const suspiciousPatterns = [
-    // Script injection
-    /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
-    // SQL injection patterns
-    /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|UNION|OR|AND)\b.*(\b(FROM|INTO|SET|WHERE|HAVING)\b))/gi,
-    // Common spam phrases
-    /\b(viagra|cialis|loan|debt|casino|poker|lottery|winner)\b/gi,
-    // Excessive links
-    /(https?:\/\/[^\s]+.*){3,}/gi,
-    // Excessive special characters
-    /[!@#$%^&*()_+=[{}|;':"\\,.<>?]{10,}/gi,
+    SCRIPT_INJECTION_PATTERN,
+    SQL_INJECTION_PATTERN,
+    SPAM_PHRASES_PATTERN,
+    EXCESSIVE_LINKS_PATTERN,
+    EXCESSIVE_SPECIAL_CHARS_PATTERN,
   ];
 
   return suspiciousPatterns.some(pattern => pattern.test(text));
 }
 
-export function logSecurityEvent(eventType: string, details: any, ip?: string): void {
+interface SecurityEventDetails {
+  [key: string]: unknown;
+}
+
+export function logSecurityEvent(eventType: string, details: SecurityEventDetails, ip?: string): void {
   const logEntry = {
     timestamp: new Date().toISOString(),
     type: eventType,

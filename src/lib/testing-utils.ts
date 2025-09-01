@@ -4,7 +4,7 @@
  * Mock IntersectionObserver for testing
  */
 export function mockIntersectionObserver() {
-  global.IntersectionObserver = class IntersectionObserver {
+  (global as any).IntersectionObserver = class IntersectionObserver {
     constructor() {}
     observe() {}
     unobserve() {}
@@ -16,7 +16,7 @@ export function mockIntersectionObserver() {
  * Mock ResizeObserver for testing
  */
 export function mockResizeObserver() {
-  global.ResizeObserver = class ResizeObserver {
+  (global as any).ResizeObserver = class ResizeObserver {
     constructor() {}
     observe() {}
     unobserve() {}
@@ -30,16 +30,16 @@ export function mockResizeObserver() {
 export function mockMatchMedia() {
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
-    value: jest.fn().mockImplementation(query => ({
+    value: (query: string) => ({
       matches: false,
       media: query,
       onchange: null,
-      addListener: jest.fn(), // deprecated
-      removeListener: jest.fn(), // deprecated
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-      dispatchEvent: jest.fn(),
-    })),
+      addListener: () => {}, // deprecated
+      removeListener: () => {}, // deprecated
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      dispatchEvent: () => {},
+    }),
   })
 }
 
@@ -48,10 +48,10 @@ export function mockMatchMedia() {
  */
 export function mockLocalStorage() {
   const localStorageMock = {
-    getItem: jest.fn(),
-    setItem: jest.fn(),
-    removeItem: jest.fn(),
-    clear: jest.fn(),
+    getItem: () => null,
+    setItem: () => {},
+    removeItem: () => {},
+    clear: () => {},
   }
   Object.defineProperty(window, 'localStorage', {
     value: localStorageMock
@@ -64,10 +64,10 @@ export function mockLocalStorage() {
  */
 export function mockSessionStorage() {
   const sessionStorageMock = {
-    getItem: jest.fn(),
-    setItem: jest.fn(),
-    removeItem: jest.fn(),
-    clear: jest.fn(),
+    getItem: () => null,
+    setItem: () => {},
+    removeItem: () => {},
+    clear: () => {},
   }
   Object.defineProperty(window, 'sessionStorage', {
     value: sessionStorageMock
@@ -79,20 +79,20 @@ export function mockSessionStorage() {
  * Mock fetch for testing
  */
 export function mockFetch() {
-  global.fetch = jest.fn() as jest.MockedFunction<typeof fetch>
-  return global.fetch as jest.MockedFunction<typeof fetch>
+  (global as any).fetch = (() => Promise.resolve(new Response())) as any
+  return (global as any).fetch as any
 }
 
 /**
  * Mock Google Analytics gtag
  */
 export function mockGtag() {
-  global.gtag = jest.fn()
+  (global as any).gtag = () => {}
   Object.defineProperty(window, 'gtag', {
-    value: global.gtag,
+    value: (global as any).gtag,
     writable: true
   })
-  return global.gtag
+  return (global as any).gtag
 }
 
 /**
@@ -187,14 +187,14 @@ export const performanceHelpers = {
    * Simulate slow network
    */
   simulateSlowNetwork: (delay: number = 2000): void => {
-    const originalFetch = global.fetch
-    global.fetch = jest.fn().mockImplementation((...args) => {
+    const originalFetch = (global as any).fetch
+    (global as any).fetch = ((...args: any[]) => {
       return new Promise(resolve => {
         setTimeout(() => {
           resolve(originalFetch(...args))
         }, delay)
       })
-    }) as jest.MockedFunction<typeof fetch>
+    }) as any
   }
 }
 
@@ -268,7 +268,7 @@ export const errorHelpers = {
    * Simulate network error
    */
   simulateNetworkError: (): void => {
-    global.fetch = jest.fn().mockRejectedValue(new Error('Network error'))
+    (global as any).fetch = () => Promise.reject(new Error('Network error'))
   },
 
   /**
@@ -448,12 +448,12 @@ export const integrationHelpers = {
    * Test analytics tracking
    */
   testAnalyticsTracking: (expectedEvent: string, expectedParameters?: Record<string, any>): boolean => {
-    const gtagMock = global.gtag as jest.MockedFunction<any>
+    const gtagMock = (global as any).gtag as any
     
     if (!gtagMock) return false
     
     const calls = gtagMock.mock.calls
-    return calls.some(call => {
+    return calls.some((call: any) => {
       const [command, event, parameters] = call
       
       if (command !== 'event' || event !== expectedEvent) {

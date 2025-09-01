@@ -1,3 +1,19 @@
+const nodemailer = require('nodemailer');
+
+// Constants
+const MAX_RETRIES = 3;
+const INITIAL_RETRY_DELAY = 5000; // 5 seconds
+const PROCESSING_DELAY = 500; // 500ms between jobs
+const QUEUE_CHECK_DELAY = 1000; // 1 second
+
+interface EmailData {
+  to: string;
+  subject: string;
+  html: string;
+  text: string;
+  delay?: number;
+}
+
 interface EmailJob {
   id: string;
   to: string;
@@ -14,16 +30,10 @@ interface EmailJob {
 class EmailQueue {
   private queue: EmailJob[] = [];
   private processing = false;
-  private readonly maxRetries = 3;
-  private readonly retryDelay = 5000; // 5 seconds
+  private readonly maxRetries = MAX_RETRIES;
+  private readonly retryDelay = INITIAL_RETRY_DELAY;
 
-  addEmail(emailData: {
-    to: string;
-    subject: string;
-    html: string;
-    text: string;
-    delay?: number;
-  }): string {
+  addEmail(emailData: EmailData): string {
     const job: EmailJob = {
       id: `email_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`,
       to: emailData.to,
@@ -61,7 +71,7 @@ class EmailQueue {
 
       if (!job) {
         // No jobs ready to process, wait a bit
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise(resolve => setTimeout(resolve, QUEUE_CHECK_DELAY));
         continue;
       }
 
@@ -88,18 +98,15 @@ class EmailQueue {
       }
 
       // Small delay between jobs
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, PROCESSING_DELAY));
     }
 
     this.processing = false;
     console.log('✨ Email queue processing completed');
   }
 
-  private async sendEmail(job: EmailJob): Promise<void> {
-    const nodemailer = require('nodemailer');
-
-    // Create transporter
-    const transporter = nodemailer.createTransporter({
+  private createTransporter(): any {
+    return nodemailer.createTransporter({
       service: 'gmail',
       auth: {
         user: process.env.GMAIL_USER,
@@ -110,8 +117,11 @@ class EmailQueue {
         rejectUnauthorized: false
       }
     });
+  }
 
-    // Send email
+  private async sendEmail(job: EmailJob): Promise<void> {
+    const transporter = this.createTransporter();
+
     await transporter.sendMail({
       from: `"WrenchIt" <${process.env.GMAIL_USER}>`,
       to: job.to,
