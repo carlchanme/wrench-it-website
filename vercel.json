@@ -5,14 +5,14 @@
   "devCommand": "npm run dev",
   "installCommand": "npm install",
   "outputDirectory": ".next",
-  
+
   "build": {
-    "env": {
-      "NEXT_PUBLIC_GA_MEASUREMENT_ID": "@ga_measurement_id",
-      "NEXT_PUBLIC_GA_CONVERSION_ID": "@ga_conversion_id",
-      "NEXT_PUBLIC_SITE_URL": "@site_url",
-      "NEXT_PUBLIC_API_URL": "@api_url"
-    }
+//    "env": {
+//      "NEXT_PUBLIC_GA_MEASUREMENT_ID": "@ga_measurement_id",
+//      "NEXT_PUBLIC_GA_CONVERSION_ID": "@ga_conversion_id",
+//      "NEXT_PUBLIC_SITE_URL": "@site_url",
+//      "NEXT_PUBLIC_API_URL": "@api_url"
+//    }
   },
 
   "env": {
@@ -156,7 +156,7 @@
   ],
 
   "trailingSlash": false,
-  
+
   "cleanUrls": true,
 
   "crons": []
