@@ -1,0 +1,12 @@
+{
+  "domains": [
+    {
+      "domain": "wrenchit.io",
+      "redirect": null
+    },
+    {
+      "domain": "www.wrenchit.io",
+      "redirect": "wrenchit.io"
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+# robots.txt for WrenchIt.io
+
+User-agent: *
+Allow: /
+
+# Allow all major search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /private/
+Disallow: /.well-known/
+Disallow: /temp/
+Disallow: /tmp/
+
+# Allow important directories
+Allow: /api/sitemap
+Allow: /_next/static/
+
+# Disallow specific file types
+Disallow: /*.json$
+Disallow: /*.xml$
+Disallow: /*.txt$
+
+# Allow sitemap and robots
+Allow: /sitemap.xml
+Allow: /robots.txt
+
+# Crawl delay for courtesy (in seconds)
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://wrenchit.io/sitemap.xml
+Sitemap: https://wrenchit.io/sitemap-index.xml
+
+# Additional sitemaps for different content types
+Sitemap: https://wrenchit.io/blog-sitemap.xml
+Sitemap: https://wrenchit.io/services-sitemap.xml
+Sitemap: https://wrenchit.io/portfolio-sitemap.xml
