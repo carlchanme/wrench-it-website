@@ -3,7 +3,6 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import emailjs from "@emailjs/browser"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -12,12 +11,11 @@ import { CheckCircle, AlertCircle, Loader2 } from "lucide-react"
 
 const contactFormSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters").max(100, "Name must be less than 100 characters"),
-  email: z.string().email("Please enter a valid email address"),
+  email: z.string().min(1, "Email is required").email({ message: "Please enter a valid email address" }),
   company: z.string().optional(),
   phone: z.string().optional(),
-  service: z.string().min(1, "Please select a service"),
-  budget: z.string().optional(),
-  message: z.string().min(10, "Message must be at least 10 characters").max(1000, "Message must be less than 1000 characters")
+  subject: z.string().min(5, "Subject must be at least 5 characters").max(200, "Subject must be less than 200 characters"),
+  message: z.string().min(10, "Message must be at least 10 characters").max(5000, "Message must be less than 5000 characters")
 })
 
 type ContactFormData = z.infer<typeof contactFormSchema>
@@ -36,41 +34,34 @@ export function ContactForm() {
       email: "",
       company: "",
       phone: "",
-      service: "",
-      budget: "",
+      subject: "",
       message: ""
     }
   })
 
   const onSubmit = async (data: ContactFormData) => {
     try {
-      // EmailJS configuration - replace with your actual service ID, template ID, and public key
-      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "service_your_id"
-      const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "template_your_id"
-      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "your_public_key"
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
 
-      const templateParams = {
-        to_name: "WrenchIt Team",
-        from_name: data.name,
-        from_email: data.email,
-        company: data.company || "Not specified",
-        phone: data.phone || "Not specified",
-        service: data.service,
-        budget: data.budget || "Not specified",
-        message: data.message,
-        reply_to: data.email
-      }
+      const result = await response.json()
 
-      const response = await emailjs.send(serviceId, templateId, templateParams, publicKey)
-
-      if (response.status === 200) {
+      if (response.ok) {
         reset()
+      } else {
+        throw new Error(result.error || 'Failed to send message')
       }
     } catch (error) {
-      console.error("Email send failed:", error)
+      const errorMessage = error instanceof Error ? error.message : 'Failed to send message';
+      console.error("Contact form submission failed:", error)
       setError("root", {
         type: "manual",
-        message: "Failed to send message. Please try again or contact us directly at carl@wrenchit.io"
+        message: errorMessage || "Failed to send message. Please try again or contact us directly at carl@wrenchit.io"
       })
     }
   }
@@ -154,48 +145,20 @@ export function ContactForm() {
           />
         </div>
 
-        <div>
-          <label htmlFor="service" className="block text-sm font-medium mb-2">
-            Service Interested In *
+        <div className="md:col-span-2">
+          <label htmlFor="subject" className="block text-sm font-medium mb-2">
+            Subject *
           </label>
-          <select
-            id="service"
-            {...register("service")}
-            className={`flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
-              errors.service ? "border-red-500 focus-visible:ring-red-500" : "border-input"
-            }`}
-          >
-            <option value="">Select a service</option>
-            <option value="website">Website Development</option>
-            <option value="mobile">Mobile App Development</option>
-            <option value="ai">AI Automation</option>
-            <option value="optimization">Performance Optimization</option>
-            <option value="team">Team Augmentation</option>
-            <option value="support">Maintenance & Support</option>
-            <option value="consulting">Consulting</option>
-            <option value="other">Other</option>
-          </select>
-          {errors.service && (
-            <p className="mt-1 text-sm text-red-600">{errors.service.message}</p>
+          <Input
+            id="subject"
+            type="text"
+            placeholder="Brief description of your project or inquiry"
+            {...register("subject")}
+            className={errors.subject ? "border-red-500 focus-visible:ring-red-500" : ""}
+          />
+          {errors.subject && (
+            <p className="mt-1 text-sm text-red-600">{errors.subject.message}</p>
           )}
-        </div>
-
-        <div>
-          <label htmlFor="budget" className="block text-sm font-medium mb-2">
-            Project Budget
-          </label>
-          <select
-            id="budget"
-            {...register("budget")}
-            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-          >
-            <option value="">Select budget range</option>
-            <option value="under-5k">Under $5,000</option>
-            <option value="5k-15k">$5,000 - $15,000</option>
-            <option value="15k-50k">$15,000 - $50,000</option>
-            <option value="50k-100k">$50,000 - $100,000</option>
-            <option value="over-100k">Over $100,000</option>
-          </select>
         </div>
       </div>
 
@@ -205,8 +168,8 @@ export function ContactForm() {
         </label>
         <Textarea
           id="message"
-          rows={6}
-          placeholder="Please describe your project requirements, goals, and any specific features you have in mind..."
+          rows={8}
+          placeholder="Please provide detailed information about your project requirements, goals, timeline, and any specific features or technologies you have in mind. The more details you provide, the better we can assist you..."
           {...register("message")}
           className={errors.message ? "border-red-500 focus-visible:ring-red-500" : ""}
         />

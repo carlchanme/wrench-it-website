@@ -1,12 +1,14 @@
+"use client"
+
 import { ReactNode, useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
 
 // SEO-optimized heading components with proper hierarchy
 
 interface HeadingProps {
-  children: ReactNode
-  className?: string
-  id?: string
+  readonly children: ReactNode
+  readonly className?: string
+  readonly id?: string
 }
 
 // H1 - Page title (should only be used once per page)
@@ -117,12 +119,12 @@ export function generateHeadingId(text: string): string {
 
 // SEO Section component that enforces proper heading structure
 interface SEOSectionProps {
-  level: 1 | 2 | 3 | 4 | 5 | 6
-  title: string
-  children: ReactNode
-  className?: string
-  id?: string
-  generateId?: boolean
+  readonly level: 1 | 2 | 3 | 4 | 5 | 6
+  readonly title: string
+  readonly children: ReactNode
+  readonly className?: string
+  readonly id?: string
+  readonly generateId?: boolean
 }
 
 export function SEOSection({ 
@@ -156,13 +158,13 @@ export function SEOSection({
 
 // Breadcrumb component for better navigation and SEO
 interface BreadcrumbItem {
-  label: string
-  href?: string
+  readonly label: string
+  readonly href?: string
 }
 
 interface BreadcrumbsProps {
-  items: BreadcrumbItem[]
-  className?: string
+  readonly items: readonly BreadcrumbItem[]
+  readonly className?: string
 }
 
 export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
@@ -175,7 +177,7 @@ export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
     >
       <ol className="flex items-center space-x-1 text-sm text-muted-foreground">
         {items.map((item, index) => (
-          <li key={index} className="flex items-center">
+          <li key={`${item.label}-${index}`} className="flex items-center">
             {index > 0 && (
               <svg
                 className="w-4 h-4 mx-1"
@@ -215,19 +217,23 @@ export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
 
 // Table of Contents component for long pages
 interface TOCItem {
-  id: string
-  title: string
-  level: number
-  children?: TOCItem[]
+  readonly id: string
+  readonly title: string
+  readonly level: number
+  readonly children?: readonly TOCItem[]
 }
 
 interface TableOfContentsProps {
-  items: TOCItem[]
-  className?: string
-  activeId?: string
+  readonly items: readonly TOCItem[]
+  readonly className?: string
+  readonly activeId?: string
 }
 
-export function TableOfContents({ items, className, activeId }: TableOfContentsProps) {
+export function TableOfContents({ 
+  items, 
+  className, 
+  activeId 
+}: Readonly<TableOfContentsProps>) {
   if (items.length === 0) return null
 
   const scrollToHeading = (id: string) => {
@@ -235,6 +241,19 @@ export function TableOfContents({ items, className, activeId }: TableOfContentsP
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' })
     }
+  }
+
+  const getPaddingClass = (level: number) => {
+    if (level === 2) return "pl-0"
+    if (level === 3) return "pl-4"
+    if (level === 4) return "pl-8"
+    return "pl-12"
+  }
+
+  const getChildPaddingClass = (level: number) => {
+    if (level === 3) return "pl-4"
+    if (level === 4) return "pl-8"
+    return "pl-12"
   }
 
   return (
@@ -247,9 +266,7 @@ export function TableOfContents({ items, className, activeId }: TableOfContentsP
               onClick={() => scrollToHeading(item.id)}
               className={cn(
                 "text-left hover:text-primary transition-colors w-full",
-                item.level === 2 ? "pl-0" : 
-                item.level === 3 ? "pl-4" : 
-                item.level === 4 ? "pl-8" : "pl-12",
+                getPaddingClass(item.level),
                 activeId === item.id ? "text-primary font-medium" : "text-muted-foreground"
               )}
             >
@@ -263,8 +280,7 @@ export function TableOfContents({ items, className, activeId }: TableOfContentsP
                       onClick={() => scrollToHeading(child.id)}
                       className={cn(
                         "text-left hover:text-primary transition-colors w-full text-xs",
-                        child.level === 3 ? "pl-4" : 
-                        child.level === 4 ? "pl-8" : "pl-12",
+                        getChildPaddingClass(child.level),
                         activeId === child.id ? "text-primary font-medium" : "text-muted-foreground"
                       )}
                     >

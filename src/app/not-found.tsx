@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link"
 import { Home, Search, ArrowLeft, FileQuestion, Mail } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -6,9 +8,8 @@ import { Input } from "@/components/ui/input"
 
 export default function NotFoundPage() {
   return (
-    <div 
+    <main 
       className="min-h-screen flex items-center justify-center p-4 bg-muted/50"
-      role="main"
       aria-labelledby="not-found-title"
     >
       <Card className="w-full max-w-2xl">
@@ -118,6 +119,6 @@ export default function NotFoundPage() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </main>
   )
 }
