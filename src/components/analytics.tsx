@@ -33,17 +33,6 @@ export const trackEvent = (eventName: string, parameters?: Record<string, any>) 
   }
 }
 
-export const trackConversion = (conversionName: string, value?: number) => {
-  if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('event', 'conversion', {
-      send_to: process.env.NEXT_PUBLIC_GA_CONVERSION_ID,
-      event_category: 'conversion',
-      event_label: conversionName,
-      value: value,
-      currency: 'USD'
-    })
-  }
-}
 
 // Common tracking functions for business events
 export const analyticsEvents = {
@@ -112,10 +101,6 @@ export const analyticsEvents = {
     event_category: 'site_search',
     search_term: searchTerm 
   }),
-  
-  // Conversions
-  projectInquiry: (value?: number) => trackConversion('project_inquiry', value),
-  consultationBooked: (value?: number) => trackConversion('consultation_booked', value),
 }
 
 // Enhanced event tracking hook

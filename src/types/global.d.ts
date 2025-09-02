@@ -10,8 +10,6 @@ declare global {
         send_page_view?: boolean
         event_category?: string
         event_label?: string
-        value?: number
-        currency?: string
         custom_parameters?: Record<string, any>
         [key: string]: any
       }
