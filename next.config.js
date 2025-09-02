@@ -121,16 +121,16 @@ const nextConfig = {
   // Redirects for SEO
   async redirects() {
     return [
-      // Redirect www to non-www
+      // Redirect non-www to www (canonical domain)
       {
         source: '/:path*',
         has: [
           {
             type: 'host',
-            value: 'www.wrenchit.io'
+            value: 'wrenchit.io'
           }
         ],
-        destination: 'https://wrenchit.io/:path*',
+        destination: 'https://www.wrenchit.io/:path*',
         permanent: true
       },
       // Redirect old URLs to new structure
