@@ -1,6 +1,6 @@
 # Deployment Guide & Checklist
 
-This guide provides step-by-step instructions for deploying the WrenchIt website to Vercel.
+This guide provides step-by-step instructions for deploying the WrenchIT website to Vercel.
 
 ## 🚀 Quick Deploy
 

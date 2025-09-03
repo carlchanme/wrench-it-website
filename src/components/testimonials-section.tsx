@@ -11,7 +11,7 @@ const testimonials = [
     name: "Sarah Johnson",
     role: "CEO",
     company: "TechStart Inc.",
-    content: "WrenchIt delivered an exceptional website that perfectly captured our brand. Their attention to detail and technical expertise is unmatched. The results exceeded our expectations.",
+    content: "WrenchIT delivered an exceptional website that perfectly captured our brand. Their attention to detail and technical expertise is unmatched. The results exceeded our expectations.",
     rating: 5,
     avatar: "SJ",
     bgColor: "bg-blue-600"
@@ -38,7 +38,7 @@ const testimonials = [
     name: "David Thompson",
     role: "CTO",
     company: "DataDriven Co.",
-    content: "Professional, reliable, and innovative. WrenchIt transformed our legacy system into a modern, scalable platform. The migration was seamless.",
+    content: "Professional, reliable, and innovative. WrenchIT transformed our legacy system into a modern, scalable platform. The migration was seamless.",
     rating: 5,
     avatar: "DT",
     bgColor: "bg-orange-600"
@@ -56,7 +56,7 @@ const testimonials = [
     name: "James Wilson",
     role: "Product Manager",
     company: "InnovateNow",
-    content: "WrenchIt's team became an extension of our own. Their expertise in both development and AI automation is truly impressive. Couldn't ask for better partners.",
+    content: "WrenchIT's team became an extension of our own. Their expertise in both development and AI automation is truly impressive. Couldn't ask for better partners.",
     rating: 5,
     avatar: "JW",
     bgColor: "bg-red-600"
@@ -91,7 +91,7 @@ export function TestimonialsSection() {
           </h2>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Don't just take our word for it. Here's what our clients have to say 
-            about working with WrenchIt.
+            about working with WrenchIT.
           </p>
         </div>
 

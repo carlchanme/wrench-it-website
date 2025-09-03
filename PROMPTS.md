@@ -24,7 +24,7 @@ DESIGN REQUIREMENTS:
 - Fast loading
 
 COMPANY INFO:
-- Company Name: WrenchIt
+- Company Name: WrenchIT
 - Industry: Software development and AI Automation company
 - Services: Build website, mobile app, ai automation
 - Contact: carl@wrenchit.io

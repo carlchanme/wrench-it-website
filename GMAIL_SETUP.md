@@ -1,6 +1,6 @@
 # Gmail SMTP Contact Form Setup Guide
 
-This guide provides complete instructions for setting up the Gmail SMTP contact form with nodemailer in your WrenchIt website.
+This guide provides complete instructions for setting up the Gmail SMTP contact form with nodemailer in your WrenchIT website.
 
 ## 📧 Gmail Configuration
 
@@ -16,7 +16,7 @@ This guide provides complete instructions for setting up the Gmail SMTP contact 
 1. Visit [Google App Passwords](https://myaccount.google.com/apppasswords)
 2. Select app: **Mail**
 3. Select device: **Other (Custom name)**
-4. Enter name: **WrenchIt Website**
+4. Enter name: **WrenchIT Website**
 5. Click **Generate**
 6. **Copy the 16-character password** (format: xxxx xxxx xxxx xxxx)
 7. **Important**: Save this password securely - you won't be able to see it again
@@ -86,9 +86,9 @@ async function testEmail() {
     
     // Send test email
     const result = await transporter.sendMail({
-      from: `"WrenchIt Test" <${process.env.GMAIL_USER}>`,
+      from: `"WrenchIT Test" <${process.env.GMAIL_USER}>`,
       to: process.env.ADMIN_EMAIL || process.env.GMAIL_USER,
-      subject: '🧪 Test Email from WrenchIt Website',
+      subject: '🧪 Test Email from WrenchIT Website',
       html: `
         <h2>Test Email Successful!</h2>
         <p>Your Gmail SMTP configuration is working correctly.</p>
