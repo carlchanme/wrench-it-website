@@ -19,7 +19,7 @@ export function HeroSection() {
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-foreground">
               <span className="block">Build the</span>
               <span className="block text-primary">Future</span>
-              <span className="block">with WrenchIt</span>
+              <span className="block">with WrenchIT</span>
             </h1>
             
             {/* Subtitle */}

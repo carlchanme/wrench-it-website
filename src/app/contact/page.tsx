@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 export const metadata: Metadata = {
   title: "Contact Us - Get Your Free Project Quote",
-  description: "Contact WrenchIt for expert software development and AI automation services. Free consultation and project quotes. Email carl@wrenchit.io or use our contact form. Response within 24 hours.",
+  description: "Contact WrenchIT for expert software development and AI automation services. Free consultation and project quotes. Email carl@wrenchit.io or use our contact form. Response within 24 hours.",
   keywords: [
     "contact software developers",
     "free project quote", 
@@ -16,13 +16,13 @@ export const metadata: Metadata = {
     "mobile app development quote"
   ],
   openGraph: {
-    title: "Contact WrenchIt - Get Your Free Project Quote",
-    description: "Contact WrenchIt for expert software development and AI automation services. Free consultation and project quotes available.",
+    title: "Contact WrenchIT - Get Your Free Project Quote",
+    description: "Contact WrenchIT for expert software development and AI automation services. Free consultation and project quotes available.",
     url: "/contact",
     type: "website",
   },
   twitter: {
-    title: "Contact WrenchIt - Get Your Free Project Quote",
+    title: "Contact WrenchIT - Get Your Free Project Quote",
     description: "Get expert software development and AI automation services. Free consultation available.",
   },
   alternates: {
@@ -115,7 +115,7 @@ export default function ContactPage() {
               {/* Additional Info */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Why Choose WrenchIt?</CardTitle>
+                  <CardTitle>Why Choose WrenchIT?</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-3 text-sm">

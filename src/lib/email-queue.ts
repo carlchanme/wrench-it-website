@@ -123,7 +123,7 @@ class EmailQueue {
     const transporter = this.createTransporter();
 
     await transporter.sendMail({
-      from: `"WrenchIt" <${process.env.GMAIL_USER}>`,
+      from: `"WrenchIT" <${process.env.GMAIL_USER}>`,
       to: job.to,
       subject: job.subject,
       html: job.html,

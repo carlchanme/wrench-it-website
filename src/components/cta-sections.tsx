@@ -217,9 +217,9 @@ export function UrgentCTA({
 
 export function SocialProofCTA({
   title = "Join 100+ Successful Projects",
-  subtitle = "See why leading companies choose WrenchIt for their most important digital initiatives.",
+  subtitle = "See why leading companies choose WrenchIT for their most important digital initiatives.",
   testimonial = {
-    text: "WrenchIt delivered exceptional results and transformed our business operations. Their expertise and professionalism are unmatched.",
+    text: "WrenchIT delivered exceptional results and transformed our business operations. Their expertise and professionalism are unmatched.",
     author: "Sarah Johnson",
     role: "CEO, TechStart Inc.",
     rating: 5

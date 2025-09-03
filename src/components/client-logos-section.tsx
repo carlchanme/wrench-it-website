@@ -20,7 +20,7 @@ const clients: Client[] = [
     logo: "🚀",
     industry: "Technology",
     description: "AI-powered startup platform",
-    testimonial: "WrenchIt delivered exceptional results",
+    testimonial: "WrenchIT delivered exceptional results",
     rating: 5
   },
   {
@@ -124,7 +124,7 @@ interface ClientLogosSectionProps {
 
 export function ClientLogosSection({ 
   title = "Trusted by Industry Leaders",
-  subtitle = "Join 100+ satisfied clients who trust WrenchIt with their most critical projects.",
+  subtitle = "Join 100+ satisfied clients who trust WrenchIT with their most critical projects.",
   showTestimonials = false,
   animated = true,
   compact = false,

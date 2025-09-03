@@ -33,9 +33,9 @@ async function testEmail() {
     // Send test email
     console.log('📤 Sending test email...');
     const result = await transporter.sendMail({
-      from: `"WrenchIt Test" <${process.env.GMAIL_USER}>`,
+      from: `"WrenchIT Test" <${process.env.GMAIL_USER}>`,
       to: process.env.ADMIN_EMAIL || process.env.GMAIL_USER,
-      subject: '🧪 Test Email from WrenchIt Website Contact Form',
+      subject: '🧪 Test Email from WrenchIT Website Contact Form',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; text-align: center;">
@@ -43,7 +43,7 @@ async function testEmail() {
           </div>
           <div style="padding: 20px; background: #f9f9f9;">
             <h2>Gmail SMTP Configuration Working ✅</h2>
-            <p>Your Gmail SMTP configuration for the WrenchIt website contact form is working correctly.</p>
+            <p>Your Gmail SMTP configuration for the T website contact form is working correctly.</p>
             
             <div style="background: white; padding: 15px; border-radius: 5px; margin: 15px 0;">
               <h3>Test Details:</h3>
@@ -73,7 +73,7 @@ async function testEmail() {
       text: `
 🧪 Test Email Successful!
 
-Your Gmail SMTP configuration for the WrenchIt website contact form is working correctly.
+Your Gmail SMTP configuration for the WrenchIT website contact form is working correctly.
 
 Test Details:
 - Timestamp: ${new Date().toISOString()}
@@ -136,6 +136,6 @@ Next Steps:
   }
 }
 
-console.log('🔧 WrenchIt Contact Form - Gmail SMTP Test');
+console.log('🔧 WrenchIT Contact Form - Gmail SMTP Test');
 console.log('==========================================');
 testEmail();

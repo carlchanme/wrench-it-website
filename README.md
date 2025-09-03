@@ -1,6 +1,6 @@
-# WrenchIt Website
+# WrenchIT Website
 
-![WrenchIt Logo](public/logo.svg)
+![WrenchIT Logo](public/wrench_it_logo.png)
 
 Professional software development and AI automation services website built with Next.js 14, TypeScript, and Tailwind CSS.
 
@@ -343,12 +343,12 @@ npm run build
 
 ## 📄 License
 
-This project is proprietary and confidential. All rights reserved by WrenchIt.
+This project is proprietary and confidential. All rights reserved by WrenchIT.
 
 ## 👥 Team
 
 - **Carl Rodriguez** - Lead Developer
-- **WrenchIt Team** - Development & Design
+- **WrenchIT Team** - Development & Design
 
 ## 📞 Support
 
@@ -356,4 +356,4 @@ For support, email carl@wrenchit.io or open an issue on GitHub.
 
 ---
 
-Built with ❤️ by [WrenchIt](https://wrenchit.io)
+Built with ❤️ by [WrenchIT](https://wrenchit.io)

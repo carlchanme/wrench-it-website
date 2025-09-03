@@ -2,8 +2,8 @@ import { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'WrenchIt - Software Development & AI Automation',
-    short_name: 'WrenchIt',
+    name: 'WrenchIT - Software Development & AI Automation',
+    short_name: 'WrenchIT',
     description: 'Professional software development and AI automation services. We build websites, mobile apps, and AI automation solutions.',
     start_url: '/',
     display: 'standalone',

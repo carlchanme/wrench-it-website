@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: "WrenchIt's privacy policy outlining how we collect, use, and protect your personal information.",
+  description: "WrenchIT's privacy policy outlining how we collect, use, and protect your personal information.",
 }
 
 export default function PrivacyPage() {

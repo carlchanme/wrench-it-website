@@ -99,14 +99,14 @@ Submitted: ${new Date().toLocaleString()}
 // Auto-reply email template
 export function getAutoReplyTemplate(data: ContactFormData) {
   return {
-    subject: `Thank you for contacting WrenchIt - We'll be in touch soon!`,
+    subject: `Thank you for contacting WrenchIT - We'll be in touch soon!`,
     html: `
       <!DOCTYPE html>
       <html lang="en">
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Thank you for contacting WrenchIt</title>
+        <title>Thank you for contacting WrenchIT</title>
         <style>
           body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
           .container { max-width: 600px; margin: 0 auto; padding: 20px; }
@@ -123,14 +123,14 @@ export function getAutoReplyTemplate(data: ContactFormData) {
       <body>
         <div class="container">
           <div class="header">
-            <div class="logo">🔧 WrenchIt</div>
+            <div class="logo">🔧 WrenchIT</div>
             <h2>Thank you for reaching out!</h2>
             <p>Professional Software Development & AI Automation</p>
           </div>
           <div class="content">
             <p>Hi ${data.name},</p>
             
-            <p>Thank you for contacting WrenchIt! We've successfully received your message and truly appreciate you taking the time to reach out to us.</p>
+            <p>Thank you for contacting WrenchIT! We've successfully received your message and truly appreciate you taking the time to reach out to us.</p>
             
             <div class="highlight">
               <h3>📋 Your Inquiry Summary:</h3>
@@ -161,7 +161,7 @@ export function getAutoReplyTemplate(data: ContactFormData) {
             <p>Best regards,<br>
             <strong>Carl Rodriguez</strong><br>
             Lead Developer & Founder<br>
-            WrenchIt - Professional Software Development</p>
+            WrenchIT - Professional Software Development</p>
             
             <div class="social-links">
               <a href="https://linkedin.com/company/wrenchit">LinkedIn</a> |
@@ -171,7 +171,7 @@ export function getAutoReplyTemplate(data: ContactFormData) {
           </div>
           <div class="footer">
             <p>This is an automated response. Please do not reply to this email.</p>
-            <p>WrenchIt | Professional Software Development & AI Automation</p>
+            <p>WrenchIT | Professional Software Development & AI Automation</p>
             <p>📧 <a href="mailto:hello@wrenchit.io">hello@wrenchit.io</a> | 🌐 <a href="https://wrenchit.io">wrenchit.io</a></p>
           </div>
         </div>
@@ -181,7 +181,7 @@ export function getAutoReplyTemplate(data: ContactFormData) {
     text: `
 Hi ${data.name},
 
-Thank you for contacting WrenchIt! We've successfully received your message and truly appreciate you taking the time to reach out to us.
+Thank you for contacting WrenchIT! We've successfully received your message and truly appreciate you taking the time to reach out to us.
 
 Your Inquiry Summary:
 Subject: ${data.subject}
@@ -200,11 +200,11 @@ Urgent Project? If your project is time-sensitive, please call us directly at (5
 Best regards,
 Carl Rodriguez
 Lead Developer & Founder
-WrenchIt - Professional Software Development
+WrenchIT - Professional Software Development
 
 ---
 This is an automated response. Please do not reply to this email.
-WrenchIt | hello@wrenchit.io | wrenchit.io
+WrenchIT | hello@wrenchit.io | wrenchit.io
     `.trim(),
   };
 }

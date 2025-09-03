@@ -1,4 +1,4 @@
-# robots.txt for WrenchIt.io
+# robots.txt for WrenchIT.io
 
 User-agent: *
 Allow: /

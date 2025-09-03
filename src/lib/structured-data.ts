@@ -19,7 +19,7 @@ export function createOrganizationData(): any {
   return {
     "@type": "Organization",
     "@id": "https://wrenchit.io/#organization",
-    name: "WrenchIt",
+    name: "WrenchIT",
     url: "https://wrenchit.io",
     logo: {
       "@type": "ImageObject",
@@ -94,7 +94,7 @@ export function createWebsiteData(): any {
     "@type": "WebSite",
     "@id": "https://wrenchit.io/#website",
     url: "https://wrenchit.io",
-    name: "WrenchIt - Software Development & AI Automation",
+    name: "WrenchIT - Software Development & AI Automation",
     description: "Professional software development and AI automation services. We build modern websites, mobile apps, and intelligent automation solutions.",
     publisher: {
       "@id": "https://wrenchit.io/#organization"
@@ -163,7 +163,7 @@ export function createArticleData({
   description,
   url,
   image,
-  author = "WrenchIt Team",
+  author = "WrenchIT Team",
   datePublished,
   dateModified
 }: {
@@ -294,7 +294,7 @@ export function generateStructuredData(props: StructuredDataProps) {
       "@type": "WebPage",
       "@id": `${props.url}#webpage`,
       url: props.url || "https://wrenchit.io",
-      name: props.title || "WrenchIt - Software Development & AI Automation",
+      name: props.title || "WrenchIT - Software Development & AI Automation",
       description: props.description || "Professional software development and AI automation services.",
       isPartOf: {
         "@id": "https://wrenchit.io/#website"
@@ -326,12 +326,12 @@ export function generateStructuredData(props: StructuredDataProps) {
   }
 }
 
-// Local business structured data (if WrenchIt has a physical location)
+// Local business structured data (if WrenchIT has a physical location)
 export function createLocalBusinessData() {
   return {
     "@type": "LocalBusiness",
     "@id": "https://wrenchit.io/#localbusiness",
-    name: "WrenchIt",
+    name: "WrenchIT",
     url: "https://wrenchit.io",
     telephone: "+1-555-123-4567",
     email: "carl@wrenchit.io",

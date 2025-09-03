@@ -8,7 +8,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
-            <h3 className="text-2xl font-bold text-primary mb-4">WrenchIt</h3>
+            <h3 className="text-2xl font-bold text-primary mb-4">WrenchIT</h3>
             <p className="text-muted-foreground mb-4 max-w-md">
               Professional software development and AI automation services. We build
               websites, mobile apps, and AI automation solutions that drive your business forward.
@@ -106,7 +106,7 @@ export function Footer() {
 
         <div className="border-t mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-muted-foreground text-sm">
-            © 2024 WrenchIt. All rights reserved.
+            © 2024 WrenchIT. All rights reserved.
           </p>
           <p className="text-muted-foreground text-sm">
             Built with Next.js and TypeScript

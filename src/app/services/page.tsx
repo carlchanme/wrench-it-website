@@ -19,13 +19,13 @@ export const metadata: Metadata = {
     "professional software solutions"
   ],
   openGraph: {
-    title: "Professional Software Development Services | WrenchIt",
+    title: "Professional Software Development Services | WrenchIT",
     description: "Expert software development and AI automation services. Custom websites, mobile apps, and intelligent automation solutions starting from $1,500.",
     url: "/services",
     type: "website",
   },
   twitter: {
-    title: "Professional Software Development Services | WrenchIt",
+    title: "Professional Software Development Services | WrenchIT",
     description: "Expert software development and AI automation services. Custom solutions starting from $1,500.",
   },
   alternates: {
@@ -275,7 +275,7 @@ export default function ServicesPage() {
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10">
+            <Button asChild size="lg" variant="outline" className="border-primary-foreground/20 text-secondary-foreground hover:bg-primary-foreground/10">
               <Link href="/about">Learn About Us</Link>
             </Button>
           </div>

@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 
   return {
-    title: `${post.title} | WrenchIt Blog`,
+    title: `${post.title} | WrenchIT Blog`,
     description: post.excerpt,
     keywords: post.tags,
     authors: [{ name: post.author }],

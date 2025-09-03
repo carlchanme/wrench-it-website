@@ -1,12 +1,14 @@
 import type { Metadata } from "next"
-import { Users, Target, Award, Heart } from "lucide-react"
+import { Users, Target, Award, Heart, ArrowRight } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: "About WrenchIt - Expert Software Development Team",
-  description: "Meet the WrenchIt team led by founder Carl Anderson. Learn about our mission, values, and 10+ years of experience in software development and AI automation services.",
+  title: "About WrenchIT - Expert Software Development Team",
+  description: "Meet the WrenchIT team led by founder Carl Anderson. Learn about our mission, values, and 10+ years of experience in software development and AI automation services.",
   keywords: [
-    "about WrenchIt",
+    "about WrenchIT",
     "software development team",
     "Carl Anderson founder",
     "AI automation experts",
@@ -15,13 +17,13 @@ export const metadata: Metadata = {
     "technology consulting"
   ],
   openGraph: {
-    title: "About WrenchIt - Expert Software Development Team",
-    description: "Meet the WrenchIt team and learn about our mission to deliver world-class software development and AI automation services.",
+    title: "About WrenchIT - Expert Software Development Team",
+    description: "Meet the WrenchIT team and learn about our mission to deliver world-class software development and AI automation services.",
     url: "/about",
     type: "website",
   },
   twitter: {
-    title: "About WrenchIt - Expert Software Development Team", 
+    title: "About WrenchIT - Expert Software Development Team", 
     description: "Meet our team of expert developers and AI specialists dedicated to transforming businesses.",
   },
   alternates: {
@@ -68,7 +70,7 @@ export default function AboutPage() {
       <section className="py-24 bg-muted/50">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">About WrenchIt</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">About WrenchIT</h1>
             <p className="text-xl text-muted-foreground mb-8">
               We're a passionate team of developers and AI specialists dedicated to building
               innovative solutions that transform businesses and improve lives.
@@ -85,7 +87,7 @@ export default function AboutPage() {
               <h2 className="text-3xl font-bold mb-6">Our Story</h2>
               <div className="prose prose-lg max-w-none text-muted-foreground">
                 <p className="mb-4">
-                  WrenchIt was founded with a simple yet powerful vision: to bridge the gap
+                  WrenchIT was founded with a simple yet powerful vision: to bridge the gap
                   between cutting-edge technology and practical business solutions. We believe
                   that every business, regardless of size, should have access to world-class
                   software development and AI automation.
@@ -146,7 +148,7 @@ export default function AboutPage() {
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Meet Our Team</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Get to know the people behind WrenchIt who are passionate about creating
+              Get to know the people behind WrenchIT who are passionate about creating
               exceptional software solutions.
             </p>
           </div>
@@ -185,6 +187,17 @@ export default function AboutPage() {
             Let's discuss how we can help transform your business with innovative
             software solutions and AI automation.
           </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild size="lg" variant="secondary">
+              <Link href="/contact">
+              Get In Touch
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="border-primary-foreground/20 text-secondary-foreground hover:bg-primary-foreground/10">
+              <Link href="/services">View Our Services</Link>
+            </Button>
+          </div>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="/contact"

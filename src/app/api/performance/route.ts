@@ -104,7 +104,7 @@ async function storePerformanceData(data: PerformanceDataPayload): Promise<void>
   
   // 3. Cloud storage (AWS CloudWatch, Google Cloud Logging)
   // await cloudWatch.putMetricData({
-  //   Namespace: 'WrenchIt/Performance',
+  //   Namespace: 'WrenchIT/Performance',
   //   MetricData: [{
   //     MetricName: data.name || data.type,
   //     Value: data.value,

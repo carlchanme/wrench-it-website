@@ -7,8 +7,8 @@ export async function GET() {
   const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>WrenchIt Blog</title>
-    <description>Expert insights on software development, AI automation, and cutting-edge technology trends from WrenchIt.</description>
+    <title>WrenchIT Blog</title>
+    <description>Expert insights on software development, AI automation, and cutting-edge technology trends from WrenchIT.</description>
     <link>${baseUrl}/blog</link>
     <language>en-US</language>
     <managingEditor>carl@wrenchit.io (Carl Anderson)</managingEditor>
@@ -17,7 +17,7 @@ export async function GET() {
     <atom:link href="${baseUrl}/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>${baseUrl}/og-image.png</url>
-      <title>WrenchIt Blog</title>
+      <title>WrenchIT Blog</title>
       <link>${baseUrl}/blog</link>
       <width>1200</width>
       <height>630</height>
@@ -50,7 +50,7 @@ export async function GET() {
       <author>carl@wrenchit.io (${post.author})</author>
       ${categories}
       <content:encoded><![CDATA[${htmlContent}]]></content:encoded>
-      <source url="${baseUrl}/blog/feed.xml">WrenchIt Blog</source>
+      <source url="${baseUrl}/blog/feed.xml">WrenchIT Blog</source>
     </item>`
     }).join('')}
   </channel>

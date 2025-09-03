@@ -84,7 +84,6 @@ export function preloadCriticalResources(): void {
     '/fonts/inter-var.woff2',
     // Critical images
     '/images/hero-bg.webp',
-    '/logo.svg'
   ]
 
   criticalResources.forEach(url => {

@@ -17,11 +17,11 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   metadataBase: new URL("https://wrenchit.io"),
   title: {
-    default: "WrenchIt - Software Development & AI Automation",
-    template: "%s | WrenchIt",
+    default: "WrenchIT - Software Development & AI Automation",
+    template: "%s | WrenchIT",
   },
   description: "Professional software development and AI automation services. We build modern websites, mobile apps, and intelligent automation solutions to transform your business.",
-  applicationName: "WrenchIt",
+  applicationName: "WrenchIT",
   keywords: [
     "software development",
     "AI automation", 
@@ -45,14 +45,14 @@ export const metadata: Metadata = {
     "startup development",
     "San Francisco software company",
     "California tech services",
-    "WrenchIt"
+    "WrenchIT"
   ],
   authors: [
-    { name: "WrenchIt Team", url: "https://wrenchit.io" },
+    { name: "WrenchIT Team", url: "https://wrenchit.io" },
     { name: "Carl Rodriguez", url: "https://wrenchit.io/team/carl-rodriguez" }
   ],
-  creator: "WrenchIt",
-  publisher: "WrenchIt",
+  creator: "WrenchIT",
+  publisher: "WrenchIT",
   generator: "Next.js",
   referrer: "origin-when-cross-origin",
   formatDetection: {
@@ -65,22 +65,22 @@ export const metadata: Metadata = {
     locale: "en_US",
     alternateLocale: ["es_ES", "fr_FR"],
     url: "https://wrenchit.io",
-    title: "WrenchIt - Software Development & AI Automation",
+    title: "WrenchIT - Software Development & AI Automation",
     description: "Professional software development and AI automation services. We build modern websites, mobile apps, and intelligent automation solutions to transform your business.",
-    siteName: "WrenchIt",
+    siteName: "WrenchIT",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "WrenchIt - Professional Software Development & AI Automation Services",
+        alt: "WrenchIT - Professional Software Development & AI Automation Services",
         type: "image/png",
       },
       {
         url: "/og-image-square.png", 
         width: 600,
         height: 600,
-        alt: "WrenchIt Logo",
+        alt: "WrenchIT Logo",
         type: "image/png",
       },
     ],
@@ -91,11 +91,11 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@wrenchit_io",
     creator: "@wrenchit_io",
-    title: "WrenchIt - Software Development & AI Automation",
+    title: "WrenchIT - Software Development & AI Automation",
     description: "Professional software development and AI automation services. Transform your business with modern technology solutions.",
     images: {
       url: "/og-image.png",
-      alt: "WrenchIt - Professional Software Development & AI Automation Services",
+      alt: "WrenchIT - Professional Software Development & AI Automation Services",
     },
   },
   robots: {
@@ -178,7 +178,7 @@ export default function RootLayout({
         <StructuredData 
           type="website"
           url="https://wrenchit.io"
-          title="WrenchIt - Software Development & AI Automation"
+          title="WrenchIT - Software Development & AI Automation"
           description="Professional software development and AI automation services. We build modern websites, mobile apps, and intelligent automation solutions to transform your business."
           image="/og-image.png"
         />
