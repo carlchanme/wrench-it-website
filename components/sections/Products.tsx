@@ -70,17 +70,16 @@ export function Products({ accent }: ProductsProps) {
               Real products. <span className="serif">Real users.</span>
             </h2>
           </div>
-          <div className="prd-tabs" role="tablist">
+          <div className="prd-tabs" aria-label="Choose a product">
             {(Object.entries(products) as [ProductKey, Product][]).map(([key, v]) => (
               <button
                 type="button"
                 key={key}
-                role="tab"
-                aria-selected={active === key}
+                aria-pressed={active === key}
                 onClick={() => setActive(key)}
                 className={`prd-tab ${active === key ? "is-active" : ""}`}
               >
-                <span className="prd-tab-dot" style={{ background: v.colorA }} />
+                <span className="prd-tab-dot" style={{ background: v.colorA }} aria-hidden="true" />
                 {v.name}
               </button>
             ))}
@@ -125,7 +124,7 @@ export function Products({ accent }: ProductsProps) {
             </a>
           </div>
 
-          <div className="prd-visual">
+          <div className="prd-visual" inert aria-hidden="true">
             {active === "tapduty" ? <TapDutyMock accent={accent} /> : <TuckabyMock accent={accent} />}
           </div>
         </article>
@@ -138,6 +137,7 @@ export function Products({ accent }: ProductsProps) {
 function TapDutyMock({ accent }: { accent: string }) {
   const [count, setCount] = useState(38);
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const id = setInterval(() => setCount((c) => (c < 42 ? c + 1 : 38)), 1800);
     return () => clearInterval(id);
   }, []);
@@ -328,6 +328,7 @@ function QrGlyph() {
 function TuckabyMock({ accent }: { accent: string }) {
   const [bar, setBar] = useState(0.32);
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const id = setInterval(() => setBar((b) => (b > 0.92 ? 0.15 : b + 0.02)), 800);
     return () => clearInterval(id);
   }, []);

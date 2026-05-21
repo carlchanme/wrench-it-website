@@ -128,6 +128,7 @@ function FounderCard() {
 function ShipLog({ accent }: { accent: string }) {
   const [idx, setIdx] = useState(0);
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const id = setInterval(() => setIdx((i) => (i + 1) % events.length), 2200);
     return () => clearInterval(id);
   }, []);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Icon } from "@/components/Icon";
 
@@ -20,6 +20,7 @@ export function Nav({ dark, onToggleDark }: NavProps) {
   const [scrolled, setScrolled] = useState(false);
   const [progress, setProgress] = useState(0);
   const [open, setOpen] = useState(false);
+  const burgerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const onScroll = () => {
@@ -32,6 +33,18 @@ export function Nav({ dark, onToggleDark }: NavProps) {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        burgerRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
 
   return (
     <header className={`nav ${scrolled ? "scrolled" : ""}`}>
@@ -59,7 +72,8 @@ export function Nav({ dark, onToggleDark }: NavProps) {
             type="button"
             className="nav-icon"
             onClick={onToggleDark}
-            aria-label="Toggle theme"
+            aria-label={dark ? "Switch to light theme" : "Switch to dark theme"}
+            aria-pressed={dark}
           >
             <Icon name={dark ? "sun" : "moon"} size={18} />
           </button>
@@ -70,10 +84,13 @@ export function Nav({ dark, onToggleDark }: NavProps) {
             </span>
           </a>
           <button
+            ref={burgerRef}
             type="button"
             className="nav-icon nav-burger"
             onClick={() => setOpen((o) => !o)}
-            aria-label="Menu"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            aria-controls="nav-mobile"
           >
             <Icon name={open ? "x" : "menu"} size={18} />
           </button>
@@ -82,7 +99,7 @@ export function Nav({ dark, onToggleDark }: NavProps) {
       <div className="nav-progress" style={{ transform: `scaleX(${progress})` }} />
 
       {open && (
-        <div className="nav-mobile">
+        <div id="nav-mobile" className="nav-mobile">
           {links.map((l) => (
             <a
               key={l.href}

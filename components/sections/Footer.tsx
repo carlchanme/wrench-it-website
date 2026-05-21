@@ -41,12 +41,13 @@ export function Footer() {
               <a href="mailto:hello@wrenchit.io">
                 <Icon name="mail" size={14} /> hello@wrenchit.io
               </a>
-              <a href="#">
+              {/* TODO: add real URLs and restore as anchors */}
+              <span className="ft-soon">
                 <Icon name="linkedin" size={14} /> LinkedIn
-              </a>
-              <a href="#">
+              </span>
+              <span className="ft-soon">
                 <Icon name="github" size={14} /> GitHub
-              </a>
+              </span>
             </div>
           </div>
         </div>

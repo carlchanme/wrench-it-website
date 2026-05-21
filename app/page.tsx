@@ -48,9 +48,10 @@ export default function Page() {
 
   return (
     <>
+      <a href="#main" className="skip-link">Skip to content</a>
       <Nav dark={dark} onToggleDark={() => setDark((d) => !d)} />
 
-      <main>
+      <main id="main" tabIndex={-1}>
         <Hero accent={ACCENT} />
 
         <div className="reveal">

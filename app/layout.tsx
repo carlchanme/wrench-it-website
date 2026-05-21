@@ -40,6 +40,9 @@ export default function RootLayout({
       <body
         className={`${manrope.variable} ${jetbrainsMono.variable} ${fraunces.variable}`}
       >
+        <noscript>
+          <style>{`.reveal{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
         {children}
       </body>
     </html>

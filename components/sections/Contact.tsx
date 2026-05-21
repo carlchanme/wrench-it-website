@@ -75,16 +75,16 @@ export function Contact({ accent }: ContactProps) {
                 <Icon name="mail" size={18} />
                 <span>hello@wrenchit.io</span>
               </a>
-              <div className="cta-direct-row" aria-hidden="true">
-                <Icon name="clock" size={18} />
+              <div className="cta-direct-row">
+                <span aria-hidden="true"><Icon name="clock" size={18} /></span>
                 <span>Mon–Fri · 9am to 6pm MYT</span>
               </div>
-              <div className="cta-direct-row" aria-hidden="true">
-                <Icon name="dot" size={18} />
+              <div className="cta-direct-row">
+                <span aria-hidden="true"><Icon name="dot" size={18} /></span>
                 <span>Kuala Lumpur, Malaysia</span>
               </div>
-              <div className="cta-direct-row cta-direct-note" aria-hidden="true">
-                <span className="cta-direct-bar" />
+              <div className="cta-direct-row cta-direct-note">
+                <span className="cta-direct-bar" aria-hidden="true" />
                 <span>
                   Asia-Pacific time zone. Overlapping hours with Singapore, Sydney, Tokyo, Dubai,
                   and London mornings.
@@ -98,6 +98,10 @@ export function Contact({ accent }: ContactProps) {
             onSubmit={submit}
             noValidate
           >
+            <div role="status" aria-live="polite" className="sr-only">
+              {state === "sending" && "Sending your message."}
+              {state === "sent" && "Message sent. We will reply within 24 hours."}
+            </div>
             {state !== "sent" ? (
               <>
                 <div className="fld" suppressHydrationWarning>
@@ -109,8 +113,14 @@ export function Contact({ accent }: ContactProps) {
                     onChange={update("name")}
                     placeholder="Alex Tan"
                     autoComplete="name"
+                    aria-invalid={errors.name ? true : undefined}
+                    aria-describedby={errors.name ? "f-name-err" : undefined}
                   />
-                  {errors.name && <span className="fld-err">{errors.name}</span>}
+                  {errors.name && (
+                    <span id="f-name-err" className="fld-err">
+                      {errors.name}
+                    </span>
+                  )}
                 </div>
                 <div className="fld" suppressHydrationWarning>
                   <label htmlFor="f-email">Email</label>
@@ -121,16 +131,31 @@ export function Contact({ accent }: ContactProps) {
                     onChange={update("email")}
                     placeholder="you@company.com"
                     autoComplete="email"
+                    aria-invalid={errors.email ? true : undefined}
+                    aria-describedby={errors.email ? "f-email-err" : undefined}
                   />
-                  {errors.email && <span className="fld-err">{errors.email}</span>}
+                  {errors.email && (
+                    <span id="f-email-err" className="fld-err">
+                      {errors.email}
+                    </span>
+                  )}
                 </div>
-                <div className="fld" suppressHydrationWarning>
-                  <label>I&apos;m interested in</label>
+                <div
+                  className="fld"
+                  role="radiogroup"
+                  aria-labelledby="f-project-label"
+                  suppressHydrationWarning
+                >
+                  <span id="f-project-label" className="fld-label-static">
+                    I&apos;m interested in
+                  </span>
                   <div className="seg">
                     {projects.map((opt) => (
                       <button
                         type="button"
                         key={opt}
+                        role="radio"
+                        aria-checked={form.project === opt}
                         className={`seg-opt ${form.project === opt ? "is-on" : ""}`}
                         onClick={() => setForm((f) => ({ ...f, project: opt }))}
                       >
@@ -147,8 +172,14 @@ export function Contact({ accent }: ContactProps) {
                     value={form.message}
                     onChange={update("message")}
                     placeholder="Describe the problem in your own words. No tech talk needed."
+                    aria-invalid={errors.message ? true : undefined}
+                    aria-describedby={errors.message ? "f-msg-err" : undefined}
                   />
-                  {errors.message && <span className="fld-err">{errors.message}</span>}
+                  {errors.message && (
+                    <span id="f-msg-err" className="fld-err">
+                      {errors.message}
+                    </span>
+                  )}
                 </div>
                 <button
                   type="submit"

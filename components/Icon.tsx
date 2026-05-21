@@ -27,10 +27,13 @@ type IconProps = {
   stroke?: number;
   className?: string;
   style?: CSSProperties;
+  /** Override default `aria-hidden="true"` when the icon carries meaning standalone. */
+  title?: string;
 };
 
-export function Icon({ name, size = 22, stroke = 1.6, className = "", style }: IconProps) {
+export function Icon({ name, size = 22, stroke = 1.6, className = "", style, title }: IconProps) {
   const s: CSSProperties = { width: size, height: size, ...(style || {}) };
+  const labelled = Boolean(title);
   const common = {
     viewBox: "0 0 24 24",
     fill: "none",
@@ -40,6 +43,10 @@ export function Icon({ name, size = 22, stroke = 1.6, className = "", style }: I
     strokeLinejoin: "round" as const,
     className,
     style: s,
+    focusable: false as const,
+    ...(labelled
+      ? { role: "img" as const, "aria-label": title }
+      : { "aria-hidden": true as const }),
   };
 
   switch (name) {
