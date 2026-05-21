@@ -59,11 +59,12 @@ export const viewport: Viewport = {
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Organization",
+  "@type": "ProfessionalService",
   name: SITE_NAME,
   legalName: "WrenchIt Software House Sdn Bhd",
   url: SITE_URL,
   logo: `${SITE_URL}/wrench-logo-horizontal.png`,
+  image: `${SITE_URL}/opengraph-image`,
   description: SITE_DESC,
   email: "hello@wrenchit.io",
   founder: {
@@ -74,8 +75,31 @@ const jsonLd = {
   address: {
     "@type": "PostalAddress",
     addressLocality: "Kuala Lumpur",
+    addressRegion: "Wilayah Persekutuan Kuala Lumpur",
     addressCountry: "MY",
   },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 3.139,
+    longitude: 101.6869,
+  },
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      opens: "09:00",
+      closes: "18:00",
+    },
+  ],
+  areaServed: ["MY", "SG", "AU", "JP", "AE", "GB"],
+  knowsAbout: [
+    "Custom SaaS development",
+    "AI automation",
+    "Full-stack development",
+    "React Native",
+    "Next.js",
+    "Supabase",
+  ],
   sameAs: [],
 };
 
