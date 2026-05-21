@@ -24,8 +24,8 @@ export function HeroSection() {
             
             {/* Subtitle */}
             <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Professional software development and AI automation services that transform 
-              your business with reliable, scalable solutions.
+              Hours back. Headaches gone. Custom software and AI automation that
+              quietly eliminate the manual work draining your team.
             </p>
             
             {/* CTA Buttons */}
