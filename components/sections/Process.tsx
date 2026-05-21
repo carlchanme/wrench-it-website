@@ -31,7 +31,7 @@ const steps = [
 
 export function Process({ accent }: ProcessProps) {
   return (
-    <section id="process" className="section-pad proc">
+    <section id="process" className="section-pad proc" tabIndex={-1}>
       <div className="container">
         <div className="section-head">
           <div className="eyebrow">How we work</div>

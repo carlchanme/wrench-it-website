@@ -46,6 +46,16 @@ export default function Page() {
     return () => io.disconnect();
   }, []);
 
+  useEffect(() => {
+    const onHashChange = () => {
+      const id = window.location.hash.slice(1);
+      if (!id) return;
+      document.getElementById(id)?.focus({ preventScroll: true });
+    };
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, []);
+
   return (
     <>
       <a href="#main" className="skip-link">Skip to content</a>

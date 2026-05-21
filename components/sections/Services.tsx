@@ -45,7 +45,7 @@ const items: { tag: string; icon: IconName; title: string; blurb: string; points
 
 export function Services({ accent }: ServicesProps) {
   return (
-    <section id="services" className="section-pad srv">
+    <section id="services" className="section-pad srv" tabIndex={-1}>
       <div className="container">
         <div className="srv-head">
           <div>

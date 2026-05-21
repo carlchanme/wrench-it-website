@@ -57,7 +57,7 @@ export function Contact({ accent }: ContactProps) {
   };
 
   return (
-    <section id="contact" className="section-pad cta">
+    <section id="contact" className="section-pad cta" tabIndex={-1}>
       <div className="container">
         <div className="cta-card">
           <div className="cta-left">

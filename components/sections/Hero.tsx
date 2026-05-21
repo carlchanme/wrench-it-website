@@ -20,7 +20,7 @@ const events = [
 
 export function Hero({ accent }: HeroProps) {
   return (
-    <section id="top" className="hero">
+    <section id="top" className="hero" tabIndex={-1}>
       <div className="container hero-grid">
         <div className="hero-left">
           <div className="hero-eyebrow eyebrow">
@@ -116,7 +116,7 @@ function FounderCard() {
       </div>
       <div className="founder-meta">
         <div className="founder-eye mono">Founded by</div>
-        <div className="founder-name">Carl</div>
+        <h3 className="founder-name">Carl</h3>
         <p className="founder-role">
           Engineering leader · 15+ years shipping production software.
         </p>

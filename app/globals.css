@@ -5,7 +5,7 @@
   --paper: #FAF7F1;
   --ink: #15161B;
   --ink-2: #2D2D2D;
-  --muted: #6B6B6B;
+  --muted: #5E5E5E;
   --line: rgba(21, 22, 27, 0.10);
   --line-2: rgba(21, 22, 27, 0.18);
   --navy: #2E3B8E;
@@ -441,6 +441,7 @@ section { position: relative; }
   letter-spacing: 0.12em;
 }
 .founder-name {
+  margin: 0;
   font-size: 22px;
   font-weight: 700;
   letter-spacing: -0.015em;
@@ -1532,8 +1533,8 @@ a.cta-direct-row:hover { color: var(--navy); }
   outline-offset: 2px;
 }
 
-/* Make <main> not visually focusable but programmatically focusable */
-main:focus { outline: none; }
+/* Programmatically-focusable landmarks (skip-link / hashchange targets) — no visible outline */
+[tabindex="-1"]:focus { outline: none; }
 
 /* Visible focus ring for interactive elements (form inputs use their own
    box-shadow ring defined elsewhere — they declare outline:none and won't

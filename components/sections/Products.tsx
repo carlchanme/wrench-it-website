@@ -61,7 +61,7 @@ export function Products({ accent }: ProductsProps) {
   const p = products[active];
 
   return (
-    <section id="products" className="section-pad prd">
+    <section id="products" className="section-pad prd" tabIndex={-1}>
       <div className="container">
         <div className="prd-head">
           <div>

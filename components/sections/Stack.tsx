@@ -15,7 +15,7 @@ const tech = [
 
 export function Stack() {
   return (
-    <section id="stack" className="section-pad stk">
+    <section id="stack" className="section-pad stk" tabIndex={-1}>
       <div className="container">
         <div className="stk-head">
           <div className="eyebrow">Our stack</div>
