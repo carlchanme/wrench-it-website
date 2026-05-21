@@ -66,7 +66,7 @@ export async function POST(request: Request) {
   try {
     const { error } = await resend.emails.send({
       from: process.env.RESEND_FROM || "WrenchIt <onboarding@resend.dev>",
-      to: process.env.CONTACT_TO || "hello@wrenchit.io",
+      to: process.env.CONTACT_TO || "carl@wrenchit.io",
       replyTo: email,
       subject,
       text: plain,
