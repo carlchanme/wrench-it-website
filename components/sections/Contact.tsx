@@ -26,7 +26,7 @@ export function Contact({ accent }: ContactProps) {
     message: "",
   });
   const [errors, setErrors] = useState<Errors>({});
-  const [state, setState] = useState<"idle" | "sending" | "sent">("idle");
+  const [state, setState] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
   const update =
     (k: keyof FormState) =>
@@ -41,13 +41,23 @@ export function Contact({ accent }: ContactProps) {
     return errs;
   };
 
-  const submit = (e: FormEvent<HTMLFormElement>) => {
+  const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const errs = validate();
     setErrors(errs);
     if (Object.keys(errs).length) return;
     setState("sending");
-    setTimeout(() => setState("sent"), 900);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      setState("sent");
+    } catch {
+      setState("error");
+    }
   };
 
   const reset = () => {
@@ -101,6 +111,7 @@ export function Contact({ accent }: ContactProps) {
             <div role="status" aria-live="polite" className="sr-only">
               {state === "sending" && "Sending your message."}
               {state === "sent" && "Message sent. We will reply within 24 hours."}
+              {state === "error" && "Could not send. Please try again or email hello@wrenchit.io directly."}
             </div>
             {state !== "sent" ? (
               <>
@@ -194,6 +205,12 @@ export function Contact({ accent }: ContactProps) {
                     </span>
                   )}
                 </button>
+                {state === "error" && (
+                  <p className="cta-err" role="alert">
+                    Couldn&apos;t send. Please try again, or email{" "}
+                    <a href="mailto:hello@wrenchit.io">hello@wrenchit.io</a> directly.
+                  </p>
+                )}
                 <p className="cta-fine">
                   By sending, you agree we&apos;ll email you back at{" "}
                   <strong>{form.email || "your address"}</strong>. We don&apos;t share it, ever.

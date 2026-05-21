@@ -1392,6 +1392,16 @@ a.cta-direct-row:hover { color: var(--navy); }
 .cta-submit { align-self: flex-start; margin-top: 4px; }
 .cta-fine { font-size: 12.5px; color: var(--muted); margin: 0; }
 .cta-fine strong { color: var(--ink); font-weight: 600; }
+.cta-err {
+  margin: 0;
+  padding: 10px 14px;
+  font-size: 13.5px;
+  color: var(--red);
+  background: color-mix(in oklab, var(--red) 8%, transparent);
+  border: 1px solid color-mix(in oklab, var(--red) 30%, transparent);
+  border-radius: var(--r-md);
+}
+.cta-err a { color: var(--red); text-decoration: underline; }
 
 .sent { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; min-height: 340px; justify-content: center; }
 .sent-check {
@@ -1535,6 +1545,9 @@ a.cta-direct-row:hover { color: var(--navy); }
 
 /* Programmatically-focusable landmarks (skip-link / hashchange targets) — no visible outline */
 [tabindex="-1"]:focus { outline: none; }
+
+/* Offset anchor-target sections so the sticky nav (height 72px) doesn't cover their tops */
+section[id] { scroll-margin-top: 88px; }
 
 /* Visible focus ring for interactive elements (form inputs use their own
    box-shadow ring defined elsewhere — they declare outline:none and won't
