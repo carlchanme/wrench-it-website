@@ -4,9 +4,9 @@ import "./globals.css";
 
 const SITE_URL = "https://www.wrenchit.io";
 const SITE_NAME = "WrenchIt";
-const SITE_TITLE = "WrenchIt — We build what your business needs.";
+const SITE_TITLE = "Custom Software & AI Automation Studio · Kuala Lumpur | WrenchIt";
 const SITE_DESC =
-  "WrenchIt is a lean software studio that builds AI-powered products and full-stack applications. Custom SaaS, AI automation, and full-stack development — designed, built, and shipped.";
+  "Lean software studio in Kuala Lumpur. Custom SaaS, AI automation, and full-stack apps — designed, built, and shipped for founders and SMEs across APAC.";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -47,6 +47,12 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: SITE_TITLE,
     description: SITE_DESC,
+  },
+  other: {
+    "geo.region": "MY-14",
+    "geo.placename": "Kuala Lumpur",
+    "geo.position": "3.139;101.6869",
+    ICBM: "3.139, 101.6869",
   },
 };
 
