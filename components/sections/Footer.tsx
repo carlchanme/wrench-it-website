@@ -25,6 +25,7 @@ export function Footer() {
               <a href="#services">Services</a>
               <a href="#process">Process</a>
               <a href="#stack">Stack</a>
+              <a href="#faq">FAQ</a>
               <a href="#contact">Contact</a>
             </div>
             <div className="ft-col">

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Manrope, JetBrains_Mono, Fraunces } from "next/font/google";
+import { faqs } from "@/components/sections/FAQ";
 import "./globals.css";
 
 const SITE_URL = "https://www.wrenchit.io";
@@ -65,48 +66,65 @@ export const viewport: Viewport = {
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  name: SITE_NAME,
-  legalName: "WrenchIt Software House Sdn Bhd",
-  url: SITE_URL,
-  logo: `${SITE_URL}/wrench-logo-horizontal.png`,
-  image: `${SITE_URL}/opengraph-image`,
-  description: SITE_DESC,
-  email: "hello@wrenchit.io",
-  founder: {
-    "@type": "Person",
-    name: "Carl",
-    jobTitle: "Founder",
-  },
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Kuala Lumpur",
-    addressRegion: "Wilayah Persekutuan Kuala Lumpur",
-    addressCountry: "MY",
-  },
-  geo: {
-    "@type": "GeoCoordinates",
-    latitude: 3.139,
-    longitude: 101.6869,
-  },
-  openingHoursSpecification: [
+  "@graph": [
     {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      opens: "09:00",
-      closes: "18:00",
+      "@type": "ProfessionalService",
+      "@id": `${SITE_URL}/#org`,
+      name: SITE_NAME,
+      legalName: "WrenchIt Software House Sdn Bhd",
+      url: SITE_URL,
+      logo: `${SITE_URL}/wrench-logo-horizontal.png`,
+      image: `${SITE_URL}/opengraph-image`,
+      description: SITE_DESC,
+      email: "hello@wrenchit.io",
+      founder: {
+        "@type": "Person",
+        name: "Carl",
+        jobTitle: "Founder",
+      },
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Kuala Lumpur",
+        addressRegion: "Wilayah Persekutuan Kuala Lumpur",
+        addressCountry: "MY",
+      },
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: 3.139,
+        longitude: 101.6869,
+      },
+      openingHoursSpecification: [
+        {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          opens: "09:00",
+          closes: "18:00",
+        },
+      ],
+      areaServed: ["MY", "SG", "AU", "JP", "AE", "GB"],
+      knowsAbout: [
+        "Custom SaaS development",
+        "AI automation",
+        "Full-stack development",
+        "React Native",
+        "Next.js",
+        "Supabase",
+      ],
+      sameAs: [],
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${SITE_URL}/#faq`,
+      mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: f.a,
+        },
+      })),
     },
   ],
-  areaServed: ["MY", "SG", "AU", "JP", "AE", "GB"],
-  knowsAbout: [
-    "Custom SaaS development",
-    "AI automation",
-    "Full-stack development",
-    "React Native",
-    "Next.js",
-    "Supabase",
-  ],
-  sameAs: [],
 };
 
 export default function RootLayout({

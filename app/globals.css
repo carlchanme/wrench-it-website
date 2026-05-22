@@ -1549,6 +1549,61 @@ a.cta-direct-row:hover { color: var(--navy); }
 /* Offset anchor-target sections so the sticky nav (height 72px) doesn't cover their tops */
 section[id] { scroll-margin-top: 88px; }
 
+/* ==========================================================================
+   FAQ
+   ========================================================================== */
+.faq-list {
+  margin-top: clamp(40px, 6vw, 64px);
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--line);
+  max-width: 880px;
+}
+.faq-item {
+  border-bottom: 1px solid var(--line);
+  padding: 22px 0;
+}
+.faq-q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  cursor: pointer;
+  font-size: clamp(17px, 1.8vw, 21px);
+  font-weight: 600;
+  color: var(--ink);
+  list-style: none;
+  transition: color .15s ease;
+}
+.faq-q::-webkit-details-marker { display: none; }
+.faq-q:hover { color: var(--accent); }
+.faq-chev {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--muted);
+  transition: transform .2s ease, border-color .15s ease, color .15s ease;
+}
+.faq-item[open] .faq-chev {
+  transform: rotate(45deg);
+  border-color: var(--ink);
+  color: var(--ink);
+}
+.faq-a {
+  margin-top: 14px;
+  font-size: var(--fs-body);
+  line-height: 1.65;
+  color: var(--muted);
+  max-width: 70ch;
+}
+
 /* Visible focus ring for interactive elements (form inputs use their own
    box-shadow ring defined elsewhere — they declare outline:none and won't
    pick this up). */

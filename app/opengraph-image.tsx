@@ -119,7 +119,6 @@ export default async function OG() {
             position: "relative",
           }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={portraitSrc}
             alt=""
