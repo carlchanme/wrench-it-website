@@ -235,6 +235,7 @@ All fonts use `display: swap`.
 - All non-Hero sections wrapped in `<div className="reveal">` for scroll-fade-in.
 - Defines `const ACCENT = "#7A5AE0"` and threads it to sections that paint accent strokes/fills.
 - Includes `<a href="#main" className="skip-link">Skip to content</a>` as the first child for keyboard users.
+- Carries an inline comment `{/* Founder section hidden for now — preserve component for later */}` between `FAQ` and `Contact` — placeholder for a future founder section, no rendered output.
 
 ### 7.3 `components/ClientEffects.tsx` (`"use client"`)
 
@@ -394,7 +395,7 @@ Allowed projects: "Custom SaaS" | "AI automation" | "Full-stack" | "Not sure yet
 2. Verify `process.env.RESEND_API_KEY` (or fallback `RESEND_API`) is set; else `500 "Mail service not configured"`.
 3. Parse body JSON; on failure respond `400 "Invalid JSON"`.
 4. **Honeypot check** — if `body.website` is a non-empty string, respond `200 { ok: true }` and exit. No email sent.
-5. Coerce + trim string fields. Validate lengths and email regex. Validate `project` against the allow-list.
+5. Coerce string fields. `name`, `email`, and `message` are trimmed; `project` is matched verbatim against the allow-list (no trim). Validate lengths and email regex.
 6. Compose email (plain text + branded HTML, all interpolated user fields run through `escapeHtml`).
 7. Send via `Resend.emails.send` with:
    - `from`: `process.env.RESEND_FROM` (default `"WrenchIt <onboarding@resend.dev>"`)
@@ -458,16 +459,16 @@ Every external `<a target="_blank">` carries `rel="noopener noreferrer"` and an 
 
 ### 11.6 Platform HTTP headers (set in `vercel.json`)
 
-Applied to every response (`source: "/(.*)"`):
+Applied to every response (`source: "/(.*)"`), in the order they appear in `vercel.json`:
 
 | Header | Value | Purpose |
 |---|---|---|
+| `X-DNS-Prefetch-Control` | `on` | Allow DNS prefetch hints for faster external assets |
 | `Strict-Transport-Security` | `max-age=63072000; includeSubDomains; preload` | Force HTTPS for 2 years on this host + all subdomains; HSTS-preload-eligible |
 | `X-Frame-Options` | `SAMEORIGIN` | Block clickjacking via cross-origin iframes |
 | `X-Content-Type-Options` | `nosniff` | Disable MIME sniffing |
 | `Referrer-Policy` | `strict-origin-when-cross-origin` | Strip referrer detail on cross-origin navigations |
 | `Permissions-Policy` | `camera=(), microphone=(), geolocation=()` | Deny powerful APIs by default |
-| `X-DNS-Prefetch-Control` | `on` | Allow DNS prefetch hints for faster external assets |
 
 A rebuild that misses `vercel.json` will be missing all of these.
 
@@ -639,7 +640,7 @@ A reimplementation is "done" when **all** of the following are true:
 - [ ] `POST /api/contact` with a valid payload returns `200 { ok: true }` and triggers a Resend email.
 - [ ] `POST /api/contact` with `website: "anything"` returns `200 { ok: true }` **without** sending an email.
 - [ ] `POST /api/contact` from a BotID-detected bot returns `403 { ok: false, error: "Access denied" }`.
-- [ ] `curl -I https://<deploy>/` returns all six security headers from §11.6 (HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, X-DNS-Prefetch-Control).
+- [ ] `curl -I https://<deploy>/` returns all six security headers from §11.6 (X-DNS-Prefetch-Control, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy).
 - [ ] `GET /home` and `GET /index.html` issue a permanent redirect to `/`.
 - [ ] Static assets under `/_next/static/*` and image/font extensions return `Cache-Control: public, max-age=31536000, immutable`.
 - [ ] Lighthouse on `/` — **target**: Performance ≥ 95, Accessibility ≥ 95, SEO = 100. Verify with `npx lighthouse <url> --only-categories=performance,accessibility,seo` and record actuals.
