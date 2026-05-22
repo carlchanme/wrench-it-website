@@ -46,6 +46,8 @@ wrench-it-website/
 ├── app/
 │   ├── api/
 │   │   └── contact/route.ts          # POST handler: BotID + honeypot + Resend
+│   ├── favicon.ico                   # Next.js convention → served at /favicon.ico
+│   ├── icon.png                      # Next.js convention → served at /icon.png
 │   ├── globals.css                   # All design tokens + every section's styles
 │   ├── layout.tsx                    # Fonts, metadata, JSON-LD graph
 │   ├── page.tsx                      # Server component; composes sections
@@ -68,14 +70,16 @@ wrench-it-website/
 │       ├── Contact.tsx               # "use client" — form
 │       └── Footer.tsx                # Server
 ├── public/
-│   ├── carl-portrait.png
-│   ├── wrench-icon.png
-│   └── wrench-logo-horizontal.png
+│   ├── carl-portrait.png             # Founder portrait (Hero + OG image)
+│   ├── wrench-icon.png               # Brand mark (asset, not the favicon)
+│   └── wrench-logo-horizontal.png    # Horizontal logo (Nav + Footer)
 ├── instrumentation-client.ts         # initBotId() — registers /api/contact
 ├── next.config.ts                    # withBotId() wrap
-├── eslint.config.mjs                 # flat config
+├── vercel.json                       # Region, security headers, cache, redirects
+├── eslint.config.mjs                 # Flat config
 ├── tsconfig.json
 ├── package.json
+├── README.md
 └── PRD.md                            # this file
 ```
 
@@ -103,7 +107,8 @@ There is a committed `package-lock.json` and no `yarn.lock` — **always use npm
 | `/` | Static (prerendered) | Single landing page |
 | `/_not-found` | Static | Custom 404 |
 | `/api/contact` | Function (Node.js runtime, `maxDuration: 10`) | Contact form POST |
-| `/icon.png` | Static | Favicon via `public/wrench-icon.png` |
+| `/favicon.ico` | Static | From `app/favicon.ico` (Next.js convention) |
+| `/icon.png` | Static | From `app/icon.png` (Next.js convention) — auto-injected into `<head>` |
 | `/opengraph-image` | Static | Generated at build by `app/opengraph-image.tsx` |
 | `/robots.txt` | Static | From `app/robots.ts` |
 | `/sitemap.xml` | Static | From `app/sitemap.ts` |
@@ -446,10 +451,25 @@ Hidden `website` input. API responds `200 { ok: true }` (silent drop) when fille
 
 Every external `<a target="_blank">` carries `rel="noopener noreferrer"` and an sr-only `"(opens in new tab)"` indicator.
 
-### 11.5 Headers / runtime
+### 11.5 Runtime hardening
 
 - API route pinned to `runtime: "nodejs"`, `maxDuration: 10` (cap function time, defends against slow-loris-style attacks).
 - HTTP errors return structured JSON without leaking stack traces.
+
+### 11.6 Platform HTTP headers (set in `vercel.json`)
+
+Applied to every response (`source: "/(.*)"`):
+
+| Header | Value | Purpose |
+|---|---|---|
+| `Strict-Transport-Security` | `max-age=63072000; includeSubDomains; preload` | Force HTTPS for 2 years on this host + all subdomains; HSTS-preload-eligible |
+| `X-Frame-Options` | `SAMEORIGIN` | Block clickjacking via cross-origin iframes |
+| `X-Content-Type-Options` | `nosniff` | Disable MIME sniffing |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` | Strip referrer detail on cross-origin navigations |
+| `Permissions-Policy` | `camera=(), microphone=(), geolocation=()` | Deny powerful APIs by default |
+| `X-DNS-Prefetch-Control` | `on` | Allow DNS prefetch hints for faster external assets |
+
+A rebuild that misses `vercel.json` will be missing all of these.
 
 ---
 
@@ -545,6 +565,47 @@ No env vars are required for Vercel BotID Basic — provisioning is automatic on
 - Build is fully static apart from `/api/contact` (function) and `/opengraph-image` (built at deploy).
 - Vercel BotID dashboards live under **Project → Firewall → traffic filter → BotID**.
 
+### 16.1 `vercel.json` (platform configuration)
+
+The repo root contains a `vercel.json` that pins platform behaviour independent of `next.config.ts`. Required for a faithful rebuild.
+
+| Field | Value | Why |
+|---|---|---|
+| `framework` | `"nextjs"` | Explicit framework hint for Vercel build pipeline |
+| `regions` | `["sfo1"]` | Function region pin — single primary region for the contact API |
+| `env.NEXT_TELEMETRY_DISABLED` | `"1"` | Disable Next.js telemetry at build time |
+| `trailingSlash` | `false` | Canonical URLs without trailing slash |
+| `cleanUrls` | `true` | Strip `.html` from URLs (defensive — App Router doesn't emit them anyway) |
+
+**Headers** — six security headers on all routes (see §11.6), plus immutable cache headers (`public, max-age=31536000, immutable`) for these path patterns:
+
+- `*.ico`
+- `*.{png,jpg,jpeg,gif,webp,avif,svg}`
+- `*.{woff,woff2,ttf,eot,otf}`
+- `/_next/static/*`
+
+**Redirects** (permanent, status 308):
+
+- `/home → /`
+- `/index.html → /`
+
+### 16.2 Lint configuration (`eslint.config.mjs`)
+
+Flat config that composes `next/core-web-vitals` + `next/typescript` rules and ignores build outputs:
+
+```js
+import coreWebVitals from "eslint-config-next/core-web-vitals";
+import typescript from "eslint-config-next/typescript";
+
+const eslintConfig = [
+  ...coreWebVitals,
+  ...typescript,
+  { ignores: [".next/**", "node_modules/**"] },
+];
+
+export default eslintConfig;
+```
+
 ---
 
 ## 17. Git conventions
@@ -578,6 +639,9 @@ A reimplementation is "done" when **all** of the following are true:
 - [ ] `POST /api/contact` with a valid payload returns `200 { ok: true }` and triggers a Resend email.
 - [ ] `POST /api/contact` with `website: "anything"` returns `200 { ok: true }` **without** sending an email.
 - [ ] `POST /api/contact` from a BotID-detected bot returns `403 { ok: false, error: "Access denied" }`.
-- [ ] Lighthouse: Performance ≥ 95, Accessibility ≥ 95, SEO ≥ 100 on `/`.
+- [ ] `curl -I https://<deploy>/` returns all six security headers from §11.6 (HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, X-DNS-Prefetch-Control).
+- [ ] `GET /home` and `GET /index.html` issue a permanent redirect to `/`.
+- [ ] Static assets under `/_next/static/*` and image/font extensions return `Cache-Control: public, max-age=31536000, immutable`.
+- [ ] Lighthouse on `/` — **target**: Performance ≥ 95, Accessibility ≥ 95, SEO = 100. Verify with `npx lighthouse <url> --only-categories=performance,accessibility,seo` and record actuals.
 - [ ] All external links open in a new tab with `rel="noopener noreferrer"` and an sr-only "(opens in new tab)" indicator.
 - [ ] No CSS framework, no UI library, no icon library installed.
