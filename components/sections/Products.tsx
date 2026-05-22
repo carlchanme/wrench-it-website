@@ -295,7 +295,7 @@ function TapDutyMock({ accent }: { accent: string }) {
   );
 }
 
-function QrGlyph() {
+const QR_CELLS = (() => {
   const cells = [];
   for (let y = 0; y < 11; y++) {
     for (let x = 0; x < 11; x++) {
@@ -318,9 +318,13 @@ function QrGlyph() {
       );
     }
   }
+  return cells;
+})();
+
+function QrGlyph() {
   return (
     <svg viewBox="0 0 132 132" width="120" height="120" aria-hidden="true">
-      {cells}
+      {QR_CELLS}
     </svg>
   );
 }

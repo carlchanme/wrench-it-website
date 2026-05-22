@@ -6,12 +6,12 @@ export const alt = "WrenchIt — Production software, built by operators.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default async function OG() {
-  const portraitBuffer = await readFile(
-    join(process.cwd(), "public", "carl-portrait.png"),
-  );
-  const portraitSrc = `data:image/png;base64,${portraitBuffer.toString("base64")}`;
+const portraitBuffer = await readFile(
+  join(process.cwd(), "public", "carl-portrait.png"),
+);
+const portraitSrc = `data:image/png;base64,${portraitBuffer.toString("base64")}`;
 
+export default async function OG() {
   return new ImageResponse(
     (
       <div

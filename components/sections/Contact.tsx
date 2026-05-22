@@ -17,6 +17,7 @@ type FormState = {
 type Errors = Partial<Record<"name" | "email" | "message", string>>;
 
 const projects = ["Custom SaaS", "AI automation", "Full-stack", "Not sure yet"];
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function Contact({ accent }: ContactProps) {
   const [form, setForm] = useState<FormState>({
@@ -36,7 +37,7 @@ export function Contact({ accent }: ContactProps) {
   const validate = (): Errors => {
     const errs: Errors = {};
     if (form.name.trim().length < 2) errs.name = "Tell us your name.";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) errs.email = "Need a valid email.";
+    if (!EMAIL_RE.test(form.email)) errs.email = "Need a valid email.";
     if (form.message.trim().length < 12) errs.message = "A sentence or two, please.";
     return errs;
   };
