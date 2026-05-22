@@ -1550,6 +1550,48 @@ a.cta-direct-row:hover { color: var(--navy); }
 section[id] { scroll-margin-top: 88px; }
 
 /* ==========================================================================
+   404 / Not Found
+   ========================================================================== */
+.nf {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background: var(--bg);
+}
+.nf-inner {
+  padding: 96px 0;
+  max-width: 720px;
+}
+.nf-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--red) 22%, transparent);
+}
+.nf-h1 {
+  font-size: clamp(40px, 6vw, 84px);
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  font-weight: 700;
+  margin: 28px 0 24px;
+  max-width: 18ch;
+  text-wrap: balance;
+}
+.nf-sub {
+  font-size: var(--fs-lg);
+  color: var(--muted);
+  max-width: 52ch;
+  margin: 0 0 36px;
+}
+.nf-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* ==========================================================================
    FAQ
    ========================================================================== */
 .faq-list {

@@ -30,11 +30,13 @@ export function Footer() {
             </div>
             <div className="ft-col">
               <div className="ft-h mono">Products</div>
-              <a href="https://tapduty.com" target="_blank" rel="noreferrer">
+              <a href="https://tapduty.com" target="_blank" rel="noopener noreferrer">
                 TapDuty <Icon name="arrow-up" size={11} />
+                <span className="sr-only"> (opens in new tab)</span>
               </a>
-              <a href="https://tuckaby.app" target="_blank" rel="noreferrer">
+              <a href="https://tuckaby.app" target="_blank" rel="noopener noreferrer">
                 Tuckaby <Icon name="arrow-up" size={11} />
+                <span className="sr-only"> (opens in new tab)</span>
               </a>
             </div>
             <div className="ft-col">

@@ -116,11 +116,12 @@ export function Products({ accent }: ProductsProps) {
             <a
               href={`https://${p.url}`}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="prd-visit"
             >
               <span>Visit {p.url}</span>
               <Icon name="arrow-up" size={16} />
+              <span className="sr-only"> (opens in new tab)</span>
             </a>
           </div>
 
