@@ -22,14 +22,18 @@ function bad(reason: string, status = 400) {
   return NextResponse.json({ ok: false, error: reason }, { status });
 }
 
+const TEST_MODE = process.env.CONTACT_TEST_MODE === "1";
+
 export async function POST(request: Request) {
-  const verification = await checkBotId();
-  if (verification.isBot) {
-    return NextResponse.json({ ok: false, error: "Access denied" }, { status: 403 });
+  if (!TEST_MODE) {
+    const verification = await checkBotId();
+    if (verification.isBot) {
+      return NextResponse.json({ ok: false, error: "Access denied" }, { status: 403 });
+    }
   }
 
   const apiKey = process.env.RESEND_API_KEY || process.env.RESEND_API;
-  if (!apiKey) {
+  if (!TEST_MODE && !apiKey) {
     console.error("Missing RESEND_API_KEY / RESEND_API");
     return bad("Mail service not configured", 500);
   }
@@ -55,7 +59,11 @@ export async function POST(request: Request) {
   if (!VALID_PROJECTS.includes(project as (typeof VALID_PROJECTS)[number])) return bad("Invalid project");
   if (message.length < 12 || message.length > MAX_MESSAGE) return bad("Invalid message");
 
-  const resend = new Resend(apiKey);
+  if (TEST_MODE) {
+    return NextResponse.json({ ok: true });
+  }
+
+  const resend = new Resend(apiKey!);
   const subject = `New WrenchIt enquiry — ${name}`;
   const plain = [
     `Name:    ${name}`,
