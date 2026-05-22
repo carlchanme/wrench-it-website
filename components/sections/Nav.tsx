@@ -4,11 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Icon } from "@/components/Icon";
 
-type NavProps = {
-  dark: boolean;
-  onToggleDark: () => void;
-};
-
 const links = [
   { href: "#services", label: "Services" },
   { href: "#products", label: "Products" },
@@ -16,11 +11,16 @@ const links = [
   { href: "#stack", label: "Stack" },
 ];
 
-export function Nav({ dark, onToggleDark }: NavProps) {
+export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [progress, setProgress] = useState(0);
   const [open, setOpen] = useState(false);
+  const [dark, setDark] = useState(false);
   const burgerRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = dark ? "dark" : "light";
+  }, [dark]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -71,7 +71,7 @@ export function Nav({ dark, onToggleDark }: NavProps) {
           <button
             type="button"
             className="nav-icon"
-            onClick={onToggleDark}
+            onClick={() => setDark((d) => !d)}
             aria-label={dark ? "Switch to light theme" : "Switch to dark theme"}
             aria-pressed={dark}
           >
