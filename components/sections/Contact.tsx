@@ -12,6 +12,7 @@ type FormState = {
   email: string;
   project: string;
   message: string;
+  website: string;
 };
 
 type Errors = Partial<Record<"name" | "email" | "message", string>>;
@@ -25,6 +26,7 @@ export function Contact({ accent }: ContactProps) {
     email: "",
     project: "Custom SaaS",
     message: "",
+    website: "",
   });
   const [errors, setErrors] = useState<Errors>({});
   const [state, setState] = useState<"idle" | "sending" | "sent" | "error">("idle");
@@ -62,7 +64,7 @@ export function Contact({ accent }: ContactProps) {
   };
 
   const reset = () => {
-    setForm({ name: "", email: "", project: "Custom SaaS", message: "" });
+    setForm({ name: "", email: "", project: "Custom SaaS", message: "", website: "" });
     setErrors({});
     setState("idle");
   };
@@ -116,6 +118,26 @@ export function Contact({ accent }: ContactProps) {
             </div>
             {state !== "sent" ? (
               <>
+                <div
+                  aria-hidden="true"
+                  style={{
+                    position: "absolute",
+                    left: "-9999px",
+                    width: 1,
+                    height: 1,
+                    overflow: "hidden",
+                  }}
+                >
+                  <label htmlFor="f-website">Website (leave blank)</label>
+                  <input
+                    id="f-website"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={form.website}
+                    onChange={update("website")}
+                  />
+                </div>
                 <div className="fld" suppressHydrationWarning>
                   <label htmlFor="f-name">Your name</label>
                   <input

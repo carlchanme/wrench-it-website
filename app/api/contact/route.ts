@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { checkBotId } from "botid/server";
 import { Resend } from "resend";
 
 export const runtime = "nodejs";
@@ -14,6 +15,7 @@ type Body = {
   email?: unknown;
   project?: unknown;
   message?: unknown;
+  website?: unknown;
 };
 
 function bad(reason: string, status = 400) {
@@ -21,6 +23,11 @@ function bad(reason: string, status = 400) {
 }
 
 export async function POST(request: Request) {
+  const verification = await checkBotId();
+  if (verification.isBot) {
+    return NextResponse.json({ ok: false, error: "Access denied" }, { status: 403 });
+  }
+
   const apiKey = process.env.RESEND_API_KEY || process.env.RESEND_API;
   if (!apiKey) {
     console.error("Missing RESEND_API_KEY / RESEND_API");
@@ -32,6 +39,10 @@ export async function POST(request: Request) {
     body = await request.json();
   } catch {
     return bad("Invalid JSON");
+  }
+
+  if (typeof body.website === "string" && body.website.trim() !== "") {
+    return NextResponse.json({ ok: true });
   }
 
   const name = typeof body.name === "string" ? body.name.trim() : "";
