@@ -34,7 +34,7 @@ const products: Record<ProductKey, Product> = {
       { k: "12 SMEs", v: "in production" },
       { k: "2 min", v: "to onboard a team" },
     ],
-    tags: ["React Native", "Next.js", "Supabase", "QR check-in"],
+    tags: ["Next.js", "Supabase", "QR check-in"],
     colorA: "#2E3B8E",
     colorB: "#4B5BAE",
   },
