@@ -13,19 +13,35 @@ const links = [
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
+  // The hero is permanently dark (video background) regardless of theme. The
+  // bar is sticky, so at rest it sits ABOVE the hero in normal flow and needs
+  // no special treatment — but once scrolled it overlays the hero for ~900px,
+  // and a cream bar over dark video is unreadable. `scrolled` alone can't
+  // express this (it flips after 12px and stays on for the whole page).
+  const [overHero, setOverHero] = useState(true);
   const [progress, setProgress] = useState(0);
   const [open, setOpen] = useState(false);
-  const [dark, setDark] = useState(false);
+  // Dark by default — must match the data-theme stamped on <html> in layout.tsx.
+  const [dark, setDark] = useState(true);
   const burgerRef = useRef<HTMLButtonElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     document.documentElement.dataset.theme = dark ? "dark" : "light";
+    // Keep the browser/OS chrome colour in step with the chosen theme; the
+    // static metadata can only describe the default.
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute("content", dark ? "#0F1014" : "#F4EFE6");
   }, [dark]);
 
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 12);
+      const hero = document.getElementById("top");
+      const navH = headerRef.current?.offsetHeight ?? 72;
+      setOverHero(hero ? hero.getBoundingClientRect().bottom > navH : false);
       const h = document.documentElement.scrollHeight - window.innerHeight;
       setProgress(h > 0 ? Math.min(1, y / h) : 0);
     };
@@ -47,7 +63,10 @@ export function Nav() {
   }, [open]);
 
   return (
-    <header className={`nav ${scrolled ? "scrolled" : ""}`}>
+    <header
+      ref={headerRef}
+      className={`nav ${scrolled ? "scrolled" : ""} ${scrolled && overHero && !open ? "over-hero" : ""}`}
+    >
       <div className="nav-inner container">
         <a href="#top" className="nav-logo" aria-label="WrenchIt — home">
           <Image

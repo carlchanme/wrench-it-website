@@ -1,14 +1,11 @@
-import Image from "next/image";
 import { Icon } from "@/components/Icon";
+import { HeroVideo } from "@/components/HeroVideo";
 import { ShipLog } from "@/components/sections/ShipLog";
 
-type HeroProps = {
-  accent: string;
-};
-
-export function Hero({ accent }: HeroProps) {
+export function Hero() {
   return (
-    <section id="top" className="hero" tabIndex={-1}>
+    <section id="top" className="hero hero-dark" tabIndex={-1}>
+      <HeroVideo />
       <div className="container hero-grid">
         <div className="hero-left">
           <div className="hero-eyebrow eyebrow">
@@ -26,10 +23,12 @@ export function Hero({ accent }: HeroProps) {
                   preserveAspectRatio="none"
                   aria-hidden="true"
                 >
+                  {/* Sits on the page background, so it tracks the theme-aware
+                      token rather than the mode-blind `accent` prop. */}
                   <path
                     d="M2 14 C 120 4, 280 4, 598 12"
                     fill="none"
-                    stroke={accent}
+                    stroke="var(--accent)"
                     strokeWidth="4"
                     strokeLinecap="round"
                   />
@@ -72,43 +71,13 @@ export function Hero({ accent }: HeroProps) {
         </div>
 
         <div className="hero-right">
-          <FounderCard />
-          <ShipLog accent={accent} />
+          <ShipLog />
         </div>
       </div>
 
       <div className="hero-bg" aria-hidden="true">
         <div className="hero-grid-lines" />
-        <div
-          className="hero-glow"
-          style={{
-            background: `radial-gradient(60% 60% at 70% 30%, ${accent}22, transparent 70%)`,
-          }}
-        />
       </div>
     </section>
-  );
-}
-
-function FounderCard() {
-  return (
-    <div className="founder-card">
-      <div className="founder-photo">
-        <Image
-          src="/carl-portrait.png"
-          alt="Carl — founder of WrenchIt"
-          width={160}
-          height={200}
-          priority
-        />
-      </div>
-      <div className="founder-meta">
-        <div className="founder-eye mono">Founded by</div>
-        <h3 className="founder-name">Carl</h3>
-        <p className="founder-role">
-          Engineering leader · 15+ years shipping production software.
-        </p>
-      </div>
-    </div>
   );
 }

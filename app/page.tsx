@@ -9,17 +9,20 @@ import { FAQ } from "@/components/sections/FAQ";
 import { Contact } from "@/components/sections/Contact";
 import { Footer } from "@/components/sections/Footer";
 
-const ACCENT = "#7A5AE0";
+// Decorative accent for inline SVG/gradients. Mode-blind (one value serves both
+// themes), so it sits between the light and dark --accent tokens: readable on
+// cream and on near-black. Text and focus rings use var(--accent) instead.
+const ACCENT = "#4B5BAE";
 
 export default function Page() {
   return (
     <>
       <a href="#main" className="skip-link">Skip to content</a>
       <Nav />
-      <ClientEffects accent={ACCENT} />
+      <ClientEffects />
 
       <main id="main" tabIndex={-1}>
-        <Hero accent={ACCENT} />
+        <Hero />
 
         <div className="reveal">
           <Services accent={ACCENT} />

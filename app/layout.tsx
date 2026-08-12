@@ -57,10 +57,9 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#F4EFE6" },
-    { media: "(prefers-color-scheme: dark)", color: "#0F1014" },
-  ],
+  // The site ships dark regardless of OS preference, so this is a single value
+  // rather than a prefers-color-scheme pair. Nav.tsx rewrites it on toggle.
+  themeColor: "#0F1014",
 };
 
 const jsonLd = {
@@ -70,17 +69,12 @@ const jsonLd = {
       "@type": "ProfessionalService",
       "@id": `${SITE_URL}/#org`,
       name: SITE_NAME,
-      legalName: "WrenchIt Software House Sdn Bhd",
+      legalName: "WRENCH IT SOLUTIONS",
       url: SITE_URL,
       logo: `${SITE_URL}/wrench-logo-horizontal.png`,
       image: `${SITE_URL}/opengraph-image`,
       description: SITE_DESC,
       email: "hello@wrenchit.io",
-      founder: {
-        "@type": "Person",
-        name: "Carl",
-        jobTitle: "Founder",
-      },
       address: {
         "@type": "PostalAddress",
         addressLocality: "Kuala Lumpur",
@@ -126,13 +120,16 @@ const jsonLd = {
   ],
 };
 
+// Dark is the default theme; the nav toggle switches to light. `data-theme` is
+// stamped server-side so the very first paint is already dark — setting it only
+// from the client effect would flash the light palette on every load.
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="dark">
       <body
         className={`${manrope.variable} ${jetbrainsMono.variable} ${fraunces.variable}`}
       >

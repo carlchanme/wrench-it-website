@@ -2,16 +2,10 @@
 
 import { useEffect } from "react";
 
-type Props = {
-  accent: string;
-};
-
-export function ClientEffects({ accent }: Props) {
-  useEffect(() => {
-    const r = document.documentElement;
-    r.style.setProperty("--accent", accent);
-    r.style.setProperty("--accent-soft", accent);
-  }, [accent]);
+export function ClientEffects() {
+  // NOTE: this used to mirror the JS accent onto :root as an inline style.
+  // That inline style outranks every stylesheet rule, so it silently defeated
+  // the theme-aware --accent tokens in globals.css. The CSS owns the token now.
 
   useEffect(() => {
     const els = document.querySelectorAll(".reveal");

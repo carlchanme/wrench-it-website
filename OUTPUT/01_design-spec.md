@@ -9,7 +9,7 @@
 
 ## Intent
 
-A single-page marketing site for **WrenchIt Software House Sdn Bhd** - a lean
+A single-page marketing site for **WRENCH IT SOLUTIONS** - a lean
 software studio in Kuala Lumpur that designs, builds, and ships AI-powered web
 apps, mobile apps, and automation for founders and SMEs across APAC. The page
 must read like an operator's editorial portfolio, not a SaaS template. Primary

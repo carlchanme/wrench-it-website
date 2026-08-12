@@ -8,7 +8,7 @@ This document is the source of truth for rebuilding the WrenchIt marketing site 
 
 | Field | Value |
 |---|---|
-| Product | Single-page marketing site for **WrenchIt Software House Sdn Bhd** |
+| Product | Single-page marketing site for **WRENCH IT SOLUTIONS** (trading as WrenchIt) |
 | Audience | Founders / SMEs in APAC looking for a custom software studio |
 | Primary goal | Convert visitors into "Talk to us" form submissions |
 | Brand promise | "Production software. Built by operators." |

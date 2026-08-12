@@ -15,7 +15,7 @@ export function Footer() {
               className="ft-logo"
             />
             <p className="ft-tag">
-              A lean software studio. Founded by Carl. Built in Kuala Lumpur.
+              A lean software studio. Built in Kuala Lumpur.
             </p>
           </div>
 
@@ -71,7 +71,7 @@ export function Footer() {
         </div>
 
         <div className="ft-bot">
-          <span className="mono">© 2026 WrenchIt Software House Sdn Bhd</span>
+          <span className="mono">© 2026 WRENCH IT SOLUTIONS</span>
           <span className="ft-dots mono">·</span>
           <span className="mono">All rights reserved</span>
           <span className="ft-dots mono">·</span>

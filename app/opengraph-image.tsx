@@ -6,10 +6,10 @@ export const alt = "WrenchIt — Production software, built by operators.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-const portraitBuffer = await readFile(
-  join(process.cwd(), "public", "carl-portrait.png"),
+const markBuffer = await readFile(
+  join(process.cwd(), "public", "wrench-icon.png"),
 );
-const portraitSrc = `data:image/png;base64,${portraitBuffer.toString("base64")}`;
+const markSrc = `data:image/png;base64,${markBuffer.toString("base64")}`;
 
 export default async function OG() {
   return new ImageResponse(
@@ -83,7 +83,7 @@ export default async function OG() {
               style={{
                 fontSize: "92px",
                 fontWeight: 800,
-                color: "#7A5AE0",
+                color: "#1F3C88",
                 lineHeight: 0.95,
                 letterSpacing: "-0.035em",
                 marginTop: "8px",
@@ -108,27 +108,23 @@ export default async function OG() {
           </div>
         </div>
 
-        {/* Right: portrait column */}
+        {/* Right: brand mark column */}
         <div
           style={{
             width: "440px",
             display: "flex",
-            alignItems: "flex-end",
+            alignItems: "center",
             justifyContent: "center",
             padding: "0 40px 0 0",
             position: "relative",
           }}
         >
           <img
-            src={portraitSrc}
+            src={markSrc}
             alt=""
-            width={400}
-            height={600}
-            style={{
-              objectFit: "cover",
-              borderRadius: "24px",
-              boxShadow: "0 24px 60px -20px rgba(21,22,27,.25)",
-            }}
+            width={280}
+            height={280}
+            style={{ objectFit: "contain" }}
           />
         </div>
       </div>

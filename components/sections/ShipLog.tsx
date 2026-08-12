@@ -12,7 +12,7 @@ const events = [
   { t: "13:40", k: "ship", target: "tapduty / commission-v2", note: "scheduled rollout 18:00" },
 ];
 
-export function ShipLog({ accent }: { accent: string }) {
+export function ShipLog() {
   const [idx, setIdx] = useState(0);
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -42,7 +42,11 @@ export function ShipLog({ accent }: { accent: string }) {
             <span className="ship-time">{e.t}</span>
             <span
               className={`ship-tag ship-tag-${e.k}`}
-              style={e.k === "ship" ? { color: accent, borderColor: accent } : undefined}
+              style={
+                e.k === "ship"
+                  ? { color: "var(--accent)", borderColor: "var(--accent)" }
+                  : undefined
+              }
             >
               {e.k}
             </span>
@@ -61,7 +65,7 @@ export function ShipLog({ accent }: { accent: string }) {
             <polyline
               points="0,24 12,22 24,18 36,20 48,12 60,16 72,8 84,12 96,6 108,10 120,4"
               fill="none"
-              stroke={accent}
+              stroke="var(--accent)"
               strokeWidth="1.6"
               strokeLinecap="round"
               strokeLinejoin="round"

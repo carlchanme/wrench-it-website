@@ -11,8 +11,8 @@
   --navy: #2E3B8E;
   --navy-2: #1F2A6E;
   --navy-soft: #4B5BAE;
-  --accent: #7A5AE0;
-  --accent-soft: #7A5AE0;
+  --accent: #1F3C88;
+  --accent-soft: #1F3C88;
   --green: #4F7A4E;
   --red: #B14A36;
 
@@ -50,8 +50,8 @@
   --navy: #7C8AE0;
   --navy-2: #A2AEEC;
   --navy-soft: #5969C5;
-  --accent: #7A5AE0;
-  --accent-soft: #7A5AE0;
+  --accent: #7C8AE0;
+  --accent-soft: #7C8AE0;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -209,6 +209,23 @@ section { position: relative; }
   transition: border-color .2s ease, background .2s ease;
 }
 .nav.scrolled { border-bottom-color: var(--line); }
+
+/* Applied only while the scrolled bar is actually overlaying the dark hero.
+   A dark glass panel rather than full transparency: mid-hero the scrim is
+   clear, so the video underneath is bright and unpredictable — transparency
+   there would leave the links illegible on some frames. */
+.nav.over-hero {
+  background: color-mix(in oklab, #0F1014 72%, transparent);
+  border-bottom-color: rgba(244, 239, 230, 0.10);
+  --bg: #0F1014;
+  --ink: #F4EFE6;
+  --ink-2: #E5E0D6;
+  --muted: #9BA0AC;
+  --line: rgba(244, 239, 230, 0.14);
+  --line-2: rgba(244, 239, 230, 0.24);
+}
+.nav.over-hero .nav-link:hover,
+.nav.over-hero .nav-icon:hover { background: rgba(244, 239, 230, 0.08); }
 .nav-inner {
   display: flex;
   align-items: center;
@@ -223,6 +240,11 @@ section { position: relative; }
   transition: opacity .2s ease;
 }
 [data-theme="dark"] .nav-logo img { filter: invert(1) hue-rotate(180deg) brightness(1.05); }
+/* Same inversion while the bar sits over the dark hero, so the mark stays
+   visible in the LIGHT theme too. Higher specificity than the rule above, so
+   in dark theme this simply wins with an identical value (filters don't stack
+   across rules). */
+.nav.over-hero .nav-logo img { filter: invert(1) hue-rotate(180deg) brightness(1.05); }
 
 .nav-links {
   display: flex;
@@ -307,6 +329,80 @@ section { position: relative; }
   padding: clamp(56px, 8vw, 120px) 0 clamp(60px, 8vw, 120px);
   overflow: hidden;
 }
+
+/* ---------------------------------------------------------------------------
+   HERO: permanently dark.
+   The background video is dark + gold, so black-on-cream text would be
+   unreadable over it. Rather than special-casing each child, we redefine the
+   theme tokens on the section itself — everything inside (cards, ship log,
+   buttons, borders) inherits the dark treatment in BOTH themes, while the rest
+   of the page still follows the toggle. Values mirror :root[data-theme="dark"].
+   --------------------------------------------------------------------------- */
+.hero-dark {
+  --bg: #0F1014;
+  --bg-2: #15171D;
+  --paper: #181A21;
+  --ink: #F4EFE6;
+  --ink-2: #E5E0D6;
+  --muted: #9BA0AC;
+  --line: rgba(244, 239, 230, 0.10);
+  --line-2: rgba(244, 239, 230, 0.18);
+  --navy: #7C8AE0;
+  --navy-2: #A2AEEC;
+  --navy-soft: #5969C5;
+  --accent: #7C8AE0;
+  --accent-soft: #7C8AE0;
+
+  background: var(--bg);
+  color: var(--ink);
+}
+
+/* Video layer ------------------------------------------------------------- */
+.hero-video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: var(--bg);
+}
+.hero-video-el {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  /* Own compositor layer: the video repaints constantly, and without this the
+     text and cards above it get dragged into every repaint. */
+  will-change: transform;
+  transform: translateZ(0);
+}
+/* Readability scrim. Heaviest on the left where the headline sits, lighter on
+   the right so the artwork still reads behind the cards. */
+.hero-video-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, #0F1014 92%, transparent) 0%,
+      color-mix(in srgb, #0F1014 84%, transparent) 38%,
+      color-mix(in srgb, #0F1014 62%, transparent) 72%,
+      color-mix(in srgb, #0F1014 54%, transparent) 100%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, #0F1014 70%, transparent) 0%,
+      transparent 22%,
+      transparent 74%,
+      color-mix(in srgb, #0F1014 88%, transparent) 100%
+    );
+}
+
+/* Phones/tablets never download the video (see HeroVideo.tsx) — the poster is
+   the whole experience there, so let it show rather than stretching a 16:9
+   still across a tall portrait hero. */
+@media (max-width: 1023px) {
+  .hero-video-el { object-position: 65% center; }
+}
 .hero-grid {
   position: relative;
   display: grid;
@@ -384,83 +480,12 @@ section { position: relative; }
   font-family: var(--font-jetbrains-mono), monospace;
 }
 
-/* RIGHT COLUMN (founder card + ship log stack) */
+/* RIGHT COLUMN (ship log) */
 .hero-right {
   min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 16px;
-}
-
-/* FOUNDER CARD */
-.founder-card {
-  display: grid;
-  grid-template-columns: 96px minmax(0, 1fr);
-  gap: 18px;
-  align-items: center;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--r-lg);
-  padding: 14px;
-  box-shadow: var(--shadow-md);
-  position: relative;
-  overflow: hidden;
-}
-.founder-card::after {
-  content: "";
-  position: absolute;
-  inset: -1px -1px auto -1px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--accent) 60%, transparent), transparent);
-  pointer-events: none;
-}
-.founder-photo {
-  width: 96px;
-  height: 120px;
-  border-radius: var(--r-md);
-  overflow: hidden;
-  background: var(--bg-2);
-  flex-shrink: 0;
-}
-.founder-photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-.founder-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
-}
-.founder-eye {
-  font-size: 11px;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-}
-.founder-name {
-  margin: 0;
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -0.015em;
-  color: var(--ink);
-  line-height: 1.1;
-}
-.founder-role {
-  margin: 4px 0 0;
-  font-size: 13.5px;
-  color: var(--muted);
-  line-height: 1.45;
-  max-width: 36ch;
-}
-
-@media (max-width: 520px) {
-  .founder-card { grid-template-columns: 72px minmax(0, 1fr); padding: 12px; gap: 14px; }
-  .founder-photo { width: 72px; height: 90px; }
-  .founder-name { font-size: 19px; }
-  .founder-role { font-size: 13px; }
 }
 .ship {
   background: var(--paper);
