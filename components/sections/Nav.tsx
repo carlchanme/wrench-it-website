@@ -13,11 +13,12 @@ const links = [
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
-  // The hero is permanently dark (video background) regardless of theme. The
-  // bar is sticky, so at rest it sits ABOVE the hero in normal flow and needs
-  // no special treatment — but once scrolled it overlays the hero for ~900px,
-  // and a cream bar over dark video is unreadable. `scrolled` alone can't
-  // express this (it flips after 12px and stays on for the whole page).
+  // The hero follows the theme, but it keeps a video behind a partly
+  // transparent scrim. The bar is sticky, so at rest it sits ABOVE the hero in
+  // normal flow and needs no special treatment — but once scrolled it overlays
+  // the hero for ~900px, where the default 80% glass lets moving footage bleed
+  // through the links. `scrolled` alone can't express this (it flips after
+  // 12px and stays on for the whole page).
   const [overHero, setOverHero] = useState(true);
   const [progress, setProgress] = useState(0);
   const [open, setOpen] = useState(false);

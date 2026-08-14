@@ -210,22 +210,14 @@ section { position: relative; }
 }
 .nav.scrolled { border-bottom-color: var(--line); }
 
-/* Applied only while the scrolled bar is actually overlaying the dark hero.
-   A dark glass panel rather than full transparency: mid-hero the scrim is
-   clear, so the video underneath is bright and unpredictable — transparency
-   there would leave the links illegible on some frames. */
+/* Applied only while the scrolled bar is actually overlaying the hero. The
+   hero now follows the theme, so this no longer forces dark tokens — it just
+   thickens the glass, because the video sits behind a partly-transparent scrim
+   and full transparency would leave the links illegible on some frames. */
 .nav.over-hero {
-  background: color-mix(in oklab, #0F1014 72%, transparent);
-  border-bottom-color: rgba(244, 239, 230, 0.10);
-  --bg: #0F1014;
-  --ink: #F4EFE6;
-  --ink-2: #E5E0D6;
-  --muted: #9BA0AC;
-  --line: rgba(244, 239, 230, 0.14);
-  --line-2: rgba(244, 239, 230, 0.24);
+  background: color-mix(in oklab, var(--bg) 92%, transparent);
+  border-bottom-color: var(--line);
 }
-.nav.over-hero .nav-link:hover,
-.nav.over-hero .nav-icon:hover { background: rgba(244, 239, 230, 0.08); }
 .nav-inner {
   display: flex;
   align-items: center;
@@ -240,11 +232,6 @@ section { position: relative; }
   transition: opacity .2s ease;
 }
 [data-theme="dark"] .nav-logo img { filter: invert(1) hue-rotate(180deg) brightness(1.05); }
-/* Same inversion while the bar sits over the dark hero, so the mark stays
-   visible in the LIGHT theme too. Higher specificity than the rule above, so
-   in dark theme this simply wins with an identical value (filters don't stack
-   across rules). */
-.nav.over-hero .nav-logo img { filter: invert(1) hue-rotate(180deg) brightness(1.05); }
 
 .nav-links {
   display: flex;
@@ -324,35 +311,13 @@ section { position: relative; }
 /* ==========================================================================
    HERO
    ========================================================================== */
+/* The hero follows the theme like every other section — no token overrides.
+   The background video is dark + gold artwork, so readability is handled by
+   the scrim below, which tints toward whichever --bg is active. */
 .hero {
   position: relative;
   padding: clamp(56px, 8vw, 120px) 0 clamp(60px, 8vw, 120px);
   overflow: hidden;
-}
-
-/* ---------------------------------------------------------------------------
-   HERO: permanently dark.
-   The background video is dark + gold, so black-on-cream text would be
-   unreadable over it. Rather than special-casing each child, we redefine the
-   theme tokens on the section itself — everything inside (cards, ship log,
-   buttons, borders) inherits the dark treatment in BOTH themes, while the rest
-   of the page still follows the toggle. Values mirror :root[data-theme="dark"].
-   --------------------------------------------------------------------------- */
-.hero-dark {
-  --bg: #0F1014;
-  --bg-2: #15171D;
-  --paper: #181A21;
-  --ink: #F4EFE6;
-  --ink-2: #E5E0D6;
-  --muted: #9BA0AC;
-  --line: rgba(244, 239, 230, 0.10);
-  --line-2: rgba(244, 239, 230, 0.18);
-  --navy: #7C8AE0;
-  --navy-2: #A2AEEC;
-  --navy-soft: #5969C5;
-  --accent: #7C8AE0;
-  --accent-soft: #7C8AE0;
-
   background: var(--bg);
   color: var(--ink);
 }
@@ -375,26 +340,48 @@ section { position: relative; }
   will-change: transform;
   transform: translateZ(0);
 }
-/* Readability scrim. Heaviest on the left where the headline sits, lighter on
-   the right so the artwork still reads behind the cards. */
+/* Readability scrim, tinted toward the active theme background. Heaviest on
+   the left where the headline sits, lighter on the right so the artwork still
+   reads behind the cards.
+
+   LIGHT theme runs much denser than dark. The footage is near-black, so a
+   thin cream veil would still composite to a mid-grey the dark ink can't sit
+   on — the video survives as a faint ghost rather than a picture. That is the
+   cost of a light hero over dark footage; re-grade the clip if it needs to be
+   more visible. Stops are vars so the two themes share one gradient shape. */
 .hero-video-scrim {
   position: absolute;
   inset: 0;
+  --scrim: var(--bg);
+  --s1: 96%;
+  --s2: 94%;
+  --s3: 91%;
+  --s4: 90%;
+  --s-top: 60%;
+  --s-bot: 80%;
   background:
     linear-gradient(
       90deg,
-      color-mix(in srgb, #0F1014 92%, transparent) 0%,
-      color-mix(in srgb, #0F1014 84%, transparent) 38%,
-      color-mix(in srgb, #0F1014 62%, transparent) 72%,
-      color-mix(in srgb, #0F1014 54%, transparent) 100%
+      color-mix(in srgb, var(--scrim) var(--s1), transparent) 0%,
+      color-mix(in srgb, var(--scrim) var(--s2), transparent) 38%,
+      color-mix(in srgb, var(--scrim) var(--s3), transparent) 72%,
+      color-mix(in srgb, var(--scrim) var(--s4), transparent) 100%
     ),
     linear-gradient(
       180deg,
-      color-mix(in srgb, #0F1014 70%, transparent) 0%,
+      color-mix(in srgb, var(--scrim) var(--s-top), transparent) 0%,
       transparent 22%,
       transparent 74%,
-      color-mix(in srgb, #0F1014 88%, transparent) 100%
+      color-mix(in srgb, var(--scrim) var(--s-bot), transparent) 100%
     );
+}
+[data-theme="dark"] .hero-video-scrim {
+  --s1: 92%;
+  --s2: 84%;
+  --s3: 62%;
+  --s4: 54%;
+  --s-top: 70%;
+  --s-bot: 88%;
 }
 
 /* Phones/tablets never download the video (see HeroVideo.tsx) — the poster is

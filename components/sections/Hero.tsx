@@ -4,7 +4,7 @@ import { ShipLog } from "@/components/sections/ShipLog";
 
 export function Hero() {
   return (
-    <section id="top" className="hero hero-dark" tabIndex={-1}>
+    <section id="top" className="hero" tabIndex={-1}>
       <HeroVideo />
       <div className="container hero-grid">
         <div className="hero-left">
