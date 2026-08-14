@@ -34,8 +34,8 @@ export function Footer() {
                 TapDuty <Icon name="arrow-up" size={11} />
                 <span className="sr-only"> (opens in new tab)</span>
               </a>
-              <a href="https://tuckaby.app" target="_blank" rel="noopener noreferrer">
-                Tuckaby <Icon name="arrow-up" size={11} />
+              <a href="https://cusp.my" target="_blank" rel="noopener noreferrer">
+                CUSP <Icon name="arrow-up" size={11} />
                 <span className="sr-only"> (opens in new tab)</span>
               </a>
             </div>

@@ -843,7 +843,10 @@ section { position: relative; }
   border-bottom: 1px solid var(--line);
 }
 .prd-stats li { display: flex; flex-direction: column; gap: 2px; }
-.prd-stat-k { font-size: 22px; font-weight: 700; letter-spacing: -0.015em; font-variant-numeric: tabular-nums; }
+/* nowrap: the three stat columns are narrow enough that a two-word key like
+   "30 days" breaks across lines and knocks the row out of alignment. Keys are
+   short by convention, so they will not overflow. */
+.prd-stat-k { font-size: 22px; font-weight: 700; letter-spacing: -0.015em; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .prd-stat-v { font-size: 12px; color: var(--muted); font-family: var(--font-jetbrains-mono), monospace; }
 .prd-tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .prd-tag {
@@ -1058,111 +1061,207 @@ section { position: relative; }
   cursor: pointer;
 }
 
-/* Tuckaby mock */
-.tk { position: relative; width: 100%; max-width: 560px; display: flex; justify-content: center; }
-.tk-frame {
-  position: relative;
-  width: 100%;
-  max-width: 360px;
-  aspect-ratio: 9 / 16;
-  background: linear-gradient(180deg, #1E1640 0%, #2A1F46 55%, #3D2E5E 100%);
-  border-radius: 30px;
-  border: 8px solid #0F1014;
-  box-shadow: 0 30px 60px -20px rgba(21,22,27,.5);
+/* CUSP mock ---------------------------------------------------------------
+   Deliberately hard-coded to CUSP's own palette (red #E11D34 → amber #F5A524,
+   warm off-white #FFFAF8) rather than the site tokens. It is a portrait of
+   someone else's product, so it should not retheme with wrenchit.io — same
+   reasoning as the white browser chrome in the TapDuty mock above. */
+.cu { position: relative; width: 100%; max-width: 620px; }
+.cu-browser {
+  background: #FFFAF8;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  box-shadow: 0 30px 60px -25px rgba(21,22,27,.35);
   overflow: hidden;
-  color: #F4EFE6;
+  transform: rotate(-1deg);
 }
-.tk-stars { position: absolute; inset: 0; pointer-events: none; }
-.tk-stars span {
-  position: absolute;
-  background: #F4EFE6;
-  border-radius: 50%;
-  opacity: 0.7;
-  animation: twinkle 3.6s ease-in-out infinite;
+.cu-browser-bar {
+  display: flex; align-items: center; gap: 6px;
+  padding: 9px 12px;
+  background: #F6F0EF;
+  border-bottom: 1px solid #F1E1DF;
 }
-@keyframes twinkle {
-  0%,100% { opacity: 0.2; transform: scale(0.7); }
-  50%     { opacity: 0.9; transform: scale(1.1); }
+.cu-app {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  min-height: 320px;
+  color: #1C1517;
+  font-size: 12px;
 }
-.tk-moon {
-  position: absolute;
-  top: 36px;
-  right: 32px;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #F7E3B9, #C9A86F);
-  box-shadow: 0 0 40px rgba(247,227,185,.3);
-}
-.tk-content {
-  position: absolute;
-  inset: 0;
-  padding: 28px 22px 24px;
+.cu-side {
+  background: #FFF5F2;
+  border-right: 1px solid #F1E1DF;
+  padding: 14px 10px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
 }
-.tk-eye { font-size: 9.5px; color: rgba(244,239,230,.5); text-transform: uppercase; letter-spacing: 0.14em; }
-.tk-title { font-size: 26px; font-weight: 700; margin: 0; letter-spacing: -0.02em; line-height: 1.1; }
-.tk-sub { font-size: 12px; color: rgba(244,239,230,.6); margin: 0 0 4px; }
-.tk-art {
-  margin-top: auto;
-  background: rgba(15, 8, 32, 0.4);
-  border-radius: 14px;
-  padding: 6px;
-  overflow: hidden;
+.cu-side-logo { display: flex; align-items: center; gap: 8px; padding: 4px 6px; }
+.cu-side-mark {
+  width: 18px; height: 18px; border-radius: 6px;
+  background: linear-gradient(135deg, #E11D34, #FB4D4D 45%, #FB6A4A 75%, #F5A524);
 }
-.tk-player { display: flex; align-items: center; gap: 10px; margin-top: 12px; }
-.tk-play {
-  border: 0;
-  width: 40px; height: 40px;
-  border-radius: 50%;
-  display: inline-flex; align-items: center; justify-content: center;
-  color: #1E1640;
+.cu-side-name { font-weight: 800; font-size: 13px; letter-spacing: 0.01em; }
+.cu-side nav { display: flex; flex-direction: column; gap: 2px; }
+.cu-side a {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #6D5F60;
   cursor: pointer;
-  flex-shrink: 0;
 }
-.tk-track { flex: 1; height: 4px; background: rgba(244,239,230,.18); border-radius: 999px; overflow: hidden; }
-.tk-track-fill { height: 100%; transition: width .8s linear; }
-.tk-time { font-size: 10.5px; color: rgba(244,239,230,.6); }
-.tk-wave { display: flex; align-items: center; gap: 3px; height: 28px; margin-top: 6px; }
-.tk-wave span { flex: 1; border-radius: 2px; transition: height .8s ease, opacity .8s ease, background .8s ease; }
+.cu-side a i { display: inline-block; width: 12px; height: 12px; background: currentColor; opacity: 0.4; border-radius: 3px; }
+.cu-side a.is-active { background: rgba(225,29,52,.08); color: #E11D34; font-weight: 600; }
+.cu-side a.is-active i { opacity: 1; }
 
-.tk-peek {
-  position: absolute;
-  right: -10px;
-  bottom: 30px;
-  width: 180px;
-  background: rgba(20, 14, 40, 0.85);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(244,239,230,.12);
-  border-radius: 16px;
-  padding: 14px;
-  color: #F4EFE6;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  transform: rotate(5deg);
+.cu-main { padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; }
+.cu-h { display: flex; align-items: flex-end; justify-content: space-between; }
+.cu-h-eye { font-size: 10px; color: #A2908F; letter-spacing: 0.08em; text-transform: uppercase; }
+.cu-h-title { font-size: 18px; font-weight: 700; letter-spacing: -0.015em; }
+.cu-h-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px;
+  background: rgba(225,29,52,.09);
+  color: #B23A1F;
+  border-radius: 999px;
+  font-size: 11px;
 }
-.tk-peek-cover {
-  width: 40px; height: 40px;
+.cu-h-dot { width: 6px; height: 6px; border-radius: 50%; background: #E11D34; }
+
+.cu-week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+.cu-day {
+  display: flex; flex-direction: column; align-items: center; gap: 1px;
+  padding: 6px 0;
+  border-radius: 7px;
+  border: 1px solid #F1E1DF;
+  background: #fff;
+}
+.cu-day em { font-style: normal; font-size: 9px; color: #A2908F; text-transform: uppercase; letter-spacing: 0.06em; }
+.cu-day b { font-size: 12px; font-weight: 700; }
+.cu-day.is-today {
+  border-color: transparent;
+  background: linear-gradient(135deg, #E11D34, #F5A524);
+  color: #fff;
+}
+.cu-day.is-today em { color: rgba(255,255,255,.75); }
+
+/* The phone overlays the bottom-right of the browser. Without this the fill
+   bars and seat counts — the whole point of the calendar — sit underneath it.
+   Reset in the narrow media query below, where the phone shrinks and moves. */
+.cu-classes { display: flex; flex-direction: column; gap: 6px; padding-right: 158px; }
+.cu-class {
+  display: grid;
+  grid-template-columns: 40px 1.8fr 0.8fr 44px;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: #fff;
+  border: 1px solid #F1E1DF;
   border-radius: 8px;
-  background: linear-gradient(135deg, #E29A5E, #B65B33);
+}
+.cu-class-time { font-size: 10.5px; color: #6D5F60; }
+.cu-class-body { display: flex; flex-direction: column; min-width: 0; }
+.cu-class-name { font-weight: 600; font-size: 11.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cu-class-coach { font-size: 10px; color: #A2908F; }
+.cu-class-fill { height: 5px; border-radius: 999px; background: #F6ECEA; overflow: hidden; }
+.cu-class-bar { display: block; height: 100%; border-radius: 999px; transition: width .5s cubic-bezier(.2,.7,.2,1); }
+.cu-class-count { font-size: 10px; color: #6D5F60; text-align: right; }
+.cu-class-count.is-full { color: #E11D34; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+
+.cu-member {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 11px;
+  border-radius: 8px;
+  background: #FFF1EC;
+  border: 1px solid #FBDDD3;
+}
+.cu-member-av {
+  width: 24px; height: 24px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; color: #fff;
+  background: linear-gradient(135deg, #E11D34, #F5A524);
   flex-shrink: 0;
 }
-.tk-peek-eye { font-size: 9px; color: rgba(244,239,230,.55); text-transform: uppercase; letter-spacing: 0.12em; }
-.tk-peek-title { font-size: 12px; font-weight: 600; line-height: 1.2; }
+.cu-member-body { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.cu-member-name { font-weight: 600; font-size: 11.5px; }
+.cu-member-plan { font-size: 9.5px; color: #8A6F6C; }
+.cu-credits { font-size: 10px; color: #8A1622; white-space: nowrap; }
+.cu-credits b { font-size: 13px; }
+
+/* Phone overlay */
+.cu-phone {
+  position: absolute;
+  right: -22px;
+  bottom: -46px;
+  width: 188px;
+  background: #1C1517;
+  border-radius: 28px;
+  border: 6px solid #1C1517;
+  box-shadow: 0 24px 50px -15px rgba(28,21,23,.5), 0 0 0 1px rgba(0,0,0,.4);
+  overflow: hidden;
+  transform: rotate(4deg);
+  color: #FFFAF8;
+}
+.cu-phone-bar { display: flex; justify-content: space-between; padding: 8px 16px; font-size: 11px; }
+.cu-phone-body { background: #2A2022; padding: 16px; border-radius: 16px 16px 22px 22px; }
+.cu-phone-eye { font-size: 9.5px; color: #C4A9A6; text-transform: uppercase; letter-spacing: 0.12em; }
+.cu-phone-title { font-size: 16px; font-weight: 700; letter-spacing: -0.015em; margin-top: 3px; }
+.cu-phone-sub { font-size: 11px; color: #C4A9A6; margin-bottom: 14px; }
+.cu-slots { display: flex; gap: 6px; margin-bottom: 12px; }
+.cu-slot {
+  flex: 1;
+  text-align: center;
+  padding: 7px 0;
+  border-radius: 8px;
+  font-size: 11px;
+  border: 1px solid rgba(255,250,248,.16);
+  color: #C4A9A6;
+}
+.cu-slot.is-picked {
+  border-color: transparent;
+  background: linear-gradient(135deg, #E11D34, #F5A524);
+  color: #fff;
+  font-weight: 700;
+}
+.cu-phone-credit {
+  display: flex; align-items: center; justify-content: space-between;
+  background: #3A2C2F;
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-size: 11px;
+  color: #C4A9A6;
+  margin-bottom: 12px;
+}
+.cu-phone-credit b { font-size: 13px; color: #FFFAF8; }
+.cu-phone-cta {
+  width: 100%;
+  border: 0;
+  padding: 11px 0;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  background: linear-gradient(135deg, #E11D34, #FB4D4D 45%, #FB6A4A 75%, #F5A524);
+}
+
 
 @media (max-width: 900px) {
   .prd-card { grid-template-columns: 1fr; }
   .prd-visual { min-height: 460px; }
-  .td-phone { width: 160px; right: -8px; bottom: -20px; }
+  .td-phone, .cu-phone { width: 160px; right: -8px; bottom: -20px; }
+  .cu-classes { padding-right: 72px; }
 }
 @media (max-width: 540px) {
   .prd-stats { gap: 18px; flex-wrap: wrap; }
-  .td-app { grid-template-columns: 1fr; }
-  .td-side { display: none; }
+  .td-app, .cu-app { grid-template-columns: 1fr; }
+  .td-side, .cu-side { display: none; }
+  /* The phone covers the right edge on narrow screens; drop the fill bar so
+     the class name and count stay readable underneath it. */
+  .cu-class { grid-template-columns: 40px 1.5fr 44px; }
+  .cu-class-fill { display: none; }
+  .cu-classes { padding-right: 0; }
 }
 
 /* ==========================================================================

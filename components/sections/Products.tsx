@@ -7,7 +7,7 @@ type ProductsProps = {
   accent: string;
 };
 
-type ProductKey = "tapduty" | "tuckaby";
+type ProductKey = "tapduty" | "cusp";
 
 type Product = {
   label: string;
@@ -38,21 +38,26 @@ const products: Record<ProductKey, Product> = {
     colorA: "#2E3B8E",
     colorB: "#4B5BAE",
   },
-  tuckaby: {
-    label: "Bedtime Stories",
-    name: "Tuckaby",
-    url: "tuckaby.app",
+  cusp: {
+    label: "Booking & Memberships",
+    name: "CUSP",
+    url: "cusp.my",
     year: "2026",
     blurb:
-      "A bedtime story web app that reads storybooks aloud to kids — turning screen time into sleep time. AI narration with calm, expressive voices.",
+      "Booking, memberships, and class packs for salons, barbershops, spas, gyms, and fitness studios. Clients book themselves round the clock, and the whole team reads one calendar.",
+    // Capability facts, not traction. CUSP has no published customer numbers,
+    // and its own site deliberately carries no social proof it hasn't earned —
+    // this card must not get ahead of that. Keys are short because the stat
+    // column is narrow; anything past about eight characters wraps mid-phrase,
+    // and the detail they compress is already in the blurb above.
     stats: [
-      { k: "47", v: "stories at launch" },
-      { k: "8 min", v: "avg. read length" },
-      { k: "0 ads", v: "ever" },
+      { k: "2", v: "verticals served" },
+      { k: "24/7", v: "self-serve booking" },
+      { k: "30 days", v: "free trial" },
     ],
-    tags: ["Next.js", "ElevenLabs", "Vercel", "Claude API"],
-    colorA: "#3D2E5E",
-    colorB: "#7A5AE0",
+    tags: ["Next.js 16", "React 19", "Supabase", "Tailwind v4"],
+    colorA: "#E11D34",
+    colorB: "#F5A524",
   },
 };
 
@@ -126,7 +131,8 @@ export function Products({ accent }: ProductsProps) {
           </div>
 
           <div className="prd-visual" inert aria-hidden="true">
-            {active === "tapduty" ? <TapDutyMock accent={accent} /> : <TuckabyMock accent={accent} />}
+            {active === "tapduty" && <TapDutyMock accent={accent} />}
+            {active === "cusp" && <CuspMock />}
           </div>
         </article>
       </div>
@@ -329,99 +335,156 @@ function QrGlyph() {
   );
 }
 
-/* ---------- Tuckaby mock: night sky reader ---------- */
-function TuckabyMock({ accent }: { accent: string }) {
-  const [bar, setBar] = useState(0.32);
+/* ---------- CUSP mock: class calendar + client booking phone ----------
+   Unlike the other two, this mock takes no `accent` prop. CUSP has its own
+   brand — a red→coral→amber gradient — and borrowing the site's navy would
+   make the screenshot look like a WrenchIt product rather than CUSP's. */
+const CUSP_RED = "#E11D34";
+const CUSP_AMBER = "#F5A524";
+
+function CuspMock() {
+  // One class fills up while you watch. Same trick as the TapDuty check-in
+  // counter: it suggests a live system without needing real data.
+  const [booked, setBooked] = useState(9);
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const id = setInterval(() => setBar((b) => (b > 0.92 ? 0.15 : b + 0.02)), 800);
+    const id = setInterval(() => setBooked((b) => (b < 12 ? b + 1 : 9)), 1900);
     return () => clearInterval(id);
   }, []);
 
+  const week = ["M", "T", "W", "T", "F", "S", "S"];
+
+  // [time, class, coach, booked, capacity]
+  const classes: [string, string, string, number, number][] = [
+    ["07:00", "Yoga Flow", "Audrey", booked, 12],
+    ["09:30", "Reformer Pilates", "Tash", 8, 8],
+    ["18:00", "Barre Burn", "Audrey", 6, 14],
+    ["19:30", "Dance Fit", "Mei", 11, 20],
+  ];
+
   return (
-    <div className="tk">
-      <div className="tk-frame">
-        <div className="tk-stars" aria-hidden="true">
-          {Array.from({ length: 22 }).map((_, i) => {
-            const top = (i * 47) % 100;
-            const left = (i * 83) % 100;
-            const sz = (i % 3) + 1;
-            return (
-              <span
-                key={i}
-                style={{
-                  top: `${top}%`,
-                  left: `${left}%`,
-                  width: sz,
-                  height: sz,
-                  animationDelay: `${(i % 6) * 0.4}s`,
-                }}
-              />
-            );
-          })}
+    <div className="cu">
+      {/* Studio-side calendar */}
+      <div className="cu-browser">
+        <div className="cu-browser-bar">
+          <span className="td-dot td-dot-r" />
+          <span className="td-dot td-dot-y" />
+          <span className="td-dot td-dot-g" />
+          <div className="td-url mono">app.cusp.my / calendar</div>
         </div>
-        <div className="tk-moon" />
-        <div className="tk-content">
-          <div className="tk-eye mono">tuckaby · tonight&apos;s story</div>
-          <h4 className="tk-title">The Quiet Lantern</h4>
-          <p className="tk-sub">Narrated by Ada · 8 min</p>
-
-          <div className="tk-art">
-            <svg viewBox="0 0 200 120" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
-              <defs>
-                <linearGradient id="tk-hill" x1="0" x2="0" y1="0" y2="1">
-                  <stop offset="0%" stopColor="#5D4E8E" />
-                  <stop offset="100%" stopColor="#3D2E5E" />
-                </linearGradient>
-              </defs>
-              <path d="M0 90 Q 50 60 100 80 T 200 75 L 200 120 L 0 120 Z" fill="url(#tk-hill)" />
-              <path d="M0 105 Q 60 85 130 100 T 200 95 L 200 120 L 0 120 Z" fill="#2A1F46" />
-              <circle cx="160" cy="32" r="14" fill="#F7E3B9" />
-              <circle cx="155" cy="29" r="14" fill="#3D2E5E" />
-              <g transform="translate(40 70)">
-                <rect x="-3" y="-10" width="6" height="9" rx="1" fill={accent} />
-                <rect x="-4" y="-12" width="8" height="2" rx="1" fill="#F7E3B9" />
-                <line x1="0" y1="-14" x2="0" y2="-20" stroke="#F7E3B9" strokeWidth="0.8" />
-                <circle cx="0" cy="-5" r="8" fill={accent} opacity="0.25" />
-              </g>
-            </svg>
-          </div>
-
-          <div className="tk-player">
-            <button type="button" className="tk-play" style={{ background: accent }}>
-              <Icon name="play" size={18} />
-            </button>
-            <div className="tk-track">
-              <div className="tk-track-fill" style={{ width: `${bar * 100}%`, background: accent }} />
+        <div className="cu-app">
+          <aside className="cu-side">
+            <div className="cu-side-logo">
+              <span className="cu-side-mark" />
+              <span className="cu-side-name">CUSP</span>
             </div>
-            <span className="tk-time mono">3:14 / 8:02</span>
-          </div>
+            <nav>
+              <a className="is-active">
+                <i /> Calendar
+              </a>
+              <a>
+                <i /> Bookings
+              </a>
+              <a>
+                <i /> Members
+              </a>
+              <a>
+                <i /> Class packs
+              </a>
+              <a>
+                <i /> Staff
+              </a>
+            </nav>
+          </aside>
+          <div className="cu-main">
+            <div className="cu-h">
+              <div>
+                <div className="cu-h-eye mono">thursday, 21 august</div>
+                <div className="cu-h-title">Studio schedule</div>
+              </div>
+              <div className="cu-h-chip">
+                <span className="cu-h-dot" />
+                <span className="mono">4 classes today</span>
+              </div>
+            </div>
 
-          <div className="tk-wave" aria-hidden="true">
-            {Array.from({ length: 36 }).map((_, i) => {
-              const h = 6 + Math.abs(Math.sin(i * 0.6 + bar * 14)) * 18;
-              const dim = i / 36 > bar;
-              return (
-                <span
-                  key={i}
-                  style={{
-                    height: h,
-                    opacity: dim ? 0.25 : 0.9,
-                    background: dim ? "#9B95C7" : accent,
-                  }}
-                />
-              );
-            })}
+            <div className="cu-week">
+              {week.map((d, i) => (
+                <span key={`${d}-${i}`} className={`cu-day ${i === 3 ? "is-today" : ""}`}>
+                  <em>{d}</em>
+                  <b>{18 + i}</b>
+                </span>
+              ))}
+            </div>
+
+            <div className="cu-classes">
+              {classes.map(([time, name, coach, b, cap]) => {
+                const full = b >= cap;
+                return (
+                  <div className="cu-class" key={name}>
+                    <span className="cu-class-time mono">{time}</span>
+                    <span className="cu-class-body">
+                      <span className="cu-class-name">{name}</span>
+                      <span className="cu-class-coach">{coach}</span>
+                    </span>
+                    <span className="cu-class-fill">
+                      <span
+                        className="cu-class-bar"
+                        style={{
+                          width: `${(b / cap) * 100}%`,
+                          background: full ? CUSP_RED : `linear-gradient(90deg, ${CUSP_RED}, ${CUSP_AMBER})`,
+                        }}
+                      />
+                    </span>
+                    <span className={`cu-class-count mono ${full ? "is-full" : ""}`}>
+                      {full ? "full" : `${b}/${cap}`}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="cu-member">
+              <span className="cu-member-av">R</span>
+              <span className="cu-member-body">
+                <span className="cu-member-name">Rina A.</span>
+                <span className="cu-member-plan mono">10-class pack · renews 2 Sep</span>
+              </span>
+              <span className="cu-credits">
+                <b>6</b> left
+              </span>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* second card peeking */}
-      <div className="tk-peek">
-        <div className="tk-peek-cover" />
-        <div className="tk-peek-meta">
-          <div className="tk-peek-eye mono">up next</div>
-          <div className="tk-peek-title">A House Made of Cloud</div>
+      {/* Client-side booking */}
+      <div className="cu-phone">
+        <div className="cu-phone-bar">
+          <span>9:41</span>
+          <span className="mono">cusp</span>
+        </div>
+        <div className="cu-phone-body">
+          <div className="cu-phone-eye mono">book a class</div>
+          <div className="cu-phone-title">Reformer Pilates</div>
+          <div className="cu-phone-sub">Thu 21 Aug · 09:30 · Tash</div>
+
+          <div className="cu-slots">
+            {["07:00", "09:30", "18:00"].map((t) => (
+              <span key={t} className={`cu-slot ${t === "09:30" ? "is-picked" : ""}`}>
+                {t}
+              </span>
+            ))}
+          </div>
+
+          <div className="cu-phone-credit">
+            <span>Class pack</span>
+            <b>6 credits</b>
+          </div>
+
+          <button type="button" className="cu-phone-cta">
+            Confirm booking
+          </button>
         </div>
       </div>
     </div>

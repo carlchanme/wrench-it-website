@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 
 const events = [
   { t: "16:42", k: "deploy", target: "tapduty / shift-engine", note: "v2.18.0 → production" },
-  { t: "16:21", k: "build", target: "tuckaby / narrator-svc", note: "ElevenLabs streaming" },
+  { t: "16:21", k: "build", target: "cusp / class-packs", note: "credit expiry rules" },
   { t: "15:58", k: "ship", target: "client / pos-dashboard", note: "→ live to 12 stores" },
   { t: "15:33", k: "merge", target: "tapduty / qr-attendance", note: "PR #284 squashed" },
-  { t: "14:50", k: "deploy", target: "tuckaby / story-vault", note: "47 new titles" },
+  { t: "14:50", k: "deploy", target: "cusp / booking-widget", note: "embed v1.4.0" },
   { t: "14:11", k: "build", target: "client / inbox-triage", note: "Claude function-calling" },
   { t: "13:40", k: "ship", target: "tapduty / commission-v2", note: "scheduled rollout 18:00" },
 ];
