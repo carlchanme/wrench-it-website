@@ -1703,6 +1703,41 @@ section[id] { scroll-margin-top: 88px; }
 }
 
 /* ==========================================================================
+   Legal pages (/privacy)
+   ========================================================================== */
+.legal { background: var(--bg); color: var(--ink); }
+.legal-inner { padding: 72px var(--pad-x) 112px; max-width: 760px; }
+.legal-back { display: inline-block; margin-bottom: 40px; font-size: 13px; color: var(--muted); }
+.legal-back:hover { color: var(--ink); }
+.legal-h1 {
+  font-size: clamp(36px, 5vw, 60px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+  margin: 20px 0 12px;
+}
+.legal-meta { color: var(--muted); font-size: 13px; margin: 0 0 40px; }
+.legal h2 { font-size: 20px; letter-spacing: -0.01em; font-weight: 700; margin: 36px 0 10px; }
+.legal .legal-part {
+  font-size: clamp(24px, 3vw, 30px);
+  margin: 64px 0 0;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+}
+.legal p, .legal li { font-size: 16.5px; line-height: 1.7; color: var(--muted); }
+.legal p { margin: 0 0 14px; max-width: 68ch; }
+.legal ul { margin: 0 0 14px; padding-left: 22px; max-width: 68ch; }
+.legal li { margin-bottom: 6px; }
+.legal a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+.legal code {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 13.5px;
+  color: var(--ink);
+  word-break: break-all;
+}
+.ft-legal:hover { color: var(--ink); }
+
+/* ==========================================================================
    FAQ
    ========================================================================== */
 .faq-list {

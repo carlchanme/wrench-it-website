@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Icon } from "@/components/Icon";
 
 export function Footer() {
@@ -74,6 +75,10 @@ export function Footer() {
           <span className="mono">© 2026 WRENCH IT SOLUTIONS</span>
           <span className="ft-dots mono">·</span>
           <span className="mono">All rights reserved</span>
+          <span className="ft-dots mono">·</span>
+          <Link href="/privacy" className="ft-legal mono">
+            Privacy
+          </Link>
           <span className="ft-dots mono">·</span>
           <span className="mono">v1.0.0</span>
           <span className="ft-spacer" />
